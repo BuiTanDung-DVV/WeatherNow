@@ -13,5 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
-google-services.json
-weather-api-key.json
+app/google-services.json
+app/weather-api-key.json
