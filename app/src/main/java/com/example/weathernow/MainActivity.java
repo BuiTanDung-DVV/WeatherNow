@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView cityText, tempText, descText, humidityText, windText;
     private Spinner citySpinner;
     private Button btnForecast, btnCurrentLocation;
-    private String selectedCity = "Hanoi";
+    private String selectedCity = "Hanoi"; // Thành phố mặc định
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -145,41 +145,69 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fetchCurrentLocation() {
+        Log.d(TAG, "Đang yêu cầu quyền truy cập vị trí...");
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
             return;
         }
 
+        Log.d(TAG, "Đã có quyền truy cập vị trí, lấy vị trí...");
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
                 .addOnSuccessListener(this, location -> {
                     if (location != null) {
+                        Log.d(TAG, "Vị trí hiện tại: " + location.getLatitude() + ", " + location.getLongitude());
+
+                        // Tiến hành xử lý tiếp theo
                         Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
                         try {
                             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                             if (addresses != null && !addresses.isEmpty()) {
-                                String city = addresses.get(0).getLocality();
+                                Address address = addresses.get(0);
+                                String city = address.getAdminArea(); // Sử dụng adminArea (tỉnh/thành phố)
+
+                                // Kiểm tra các thành phần địa chỉ khác
+                                String country = address.getCountryName();
+                                String postalCode = address.getPostalCode();
+                                String subLocality = address.getSubLocality();
+                                String featureName = address.getFeatureName();
+
+                                // In ra thông tin địa chỉ để kiểm tra
+                                Log.d(TAG, "Địa chỉ: " + address.toString());
+                                Log.d(TAG, "Tên thành phố: " + city);
+                                Log.d(TAG, "Quốc gia: " + country);
+                                Log.d(TAG, "Mã bưu điện: " + postalCode);
+                                Log.d(TAG, "Địa phương: " + subLocality);
+                                Log.d(TAG, "Tên địa điểm: " + featureName);
+
                                 if (city != null) {
+                                    Log.d(TAG, "Thành phố từ GPS: " + city);
                                     selectedCity = city;
-
-                                    // Tìm thành phố trong danh sách spinner
-                                    ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) citySpinner.getAdapter();
-                                    int position = adapter.getPosition(city);
-
-                                    if (position >= 0) {
-                                        citySpinner.setSelection(position);
-                                    } else {
-                                        // Nếu không có trong danh sách thì vẫn lấy thời tiết
-                                        fetchWeather(selectedCity);
-                                    }
+                                    fetchWeather(selectedCity); // Gọi API lấy thời tiết cho thành phố
+                                } else {
+                                    Log.e(TAG, "Không thể lấy tên thành phố từ GPS.");
+                                    cityText.setText("Không thể xác định thành phố từ vị trí.");
                                 }
+                            } else {
+                                Log.e(TAG, "Không tìm thấy địa chỉ từ tọa độ.");
+                                cityText.setText("Không thể xác định địa chỉ.");
                             }
                         } catch (IOException e) {
                             Log.e(TAG, "Lỗi geocoder: " + e.getMessage());
                         }
+                    } else {
+                        Log.e(TAG, "Vị trí hiện tại không có giá trị.");
+                        cityText.setText("Không thể lấy vị trí.");
                     }
                 })
-                .addOnFailureListener(this, e -> Log.e(TAG, "Không thể lấy vị trí hiện tại", e));
+                .addOnFailureListener(this, e -> {
+                    Log.e(TAG, "Không thể lấy vị trí hiện tại", e);
+                    cityText.setText("Không thể lấy vị trí.");
+                });
     }
+
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
