@@ -45,7 +45,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
+    implementation (libs.guava)
 
     // Room (Local DB)
     annotationProcessor(libs.room.compiler)
