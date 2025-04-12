@@ -1,7 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
 }
+
+// Đọc key từ local.properties
+val localProperties = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        load(localFile.inputStream())
+    }
+}
+val googleMapsApiKey: String = localProperties["GOOGLE_MAPS_API_KEY"] as String? ?: ""
 
 android {
     namespace = "com.example.weathernow"
@@ -15,6 +26,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Gán biến vào manifest
+        manifestPlaceholders["GOOGLE_MAPS_API_KEY"] = googleMapsApiKey
     }
 
     buildTypes {
@@ -26,11 +40,13 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 }
+
 
 dependencies {
     implementation(libs.appcompat)
@@ -42,6 +58,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.work.runtime)
+    implementation(libs.firebase.inappmessaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -59,5 +76,9 @@ dependencies {
 
     implementation (libs.play.services.location)
     implementation(libs.play.services.maps)
+
+    implementation(libs.secrets.gradle.plugin)
+
+    implementation(libs.play.services.maps.v1700)
 
 }

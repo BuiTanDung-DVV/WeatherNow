@@ -27,10 +27,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".ForecastActivity" />
+        <activity android:name=".MapActivity" />
 
         <meta-data
             android:name="androidx.work.WorkManagerInitializer"
             android:value="androidx.work.WorkManagerInitializer" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${GOOGLE_MAPS_API_KEY}" />
     </application>
 
 </manifest>

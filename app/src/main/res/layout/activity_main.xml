@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- Nút chuyển màn dự báo -->
+        <!-- Nút xem dự báo -->
         <Button
             android:id="@+id/btnForecast"
             android:layout_width="match_parent"
@@ -78,5 +78,14 @@
             android:layout_height="wrap_content"
             android:text="Lấy thời tiết vị trí hiện tại"
             android:layout_marginTop="12dp" />
+
+        <!-- Nút chọn trên bản đồ -->
+        <Button
+            android:id="@+id/btnMapLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chọn vị trí trên bản đồ"
+            android:layout_marginTop="12dp" />
+
     </LinearLayout>
 </ScrollView>

@@ -39,10 +39,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "WeatherTest";
     private static final int REQUEST_LOCATION_PERMISSION = 1;
-
+    private static final int REQUEST_MAP_LOCATION = 100;
     private TextView cityText, tempText, descText, humidityText, windText;
     private Spinner citySpinner;
-    private Button btnForecast, btnCurrentLocation;
+    private Button btnForecast, btnCurrentLocation, btnMap;
     private String selectedCity = "Hanoi"; // Thành phố mặc định
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -59,9 +59,9 @@ public class MainActivity extends AppCompatActivity {
         windText = findViewById(R.id.windText);
         btnForecast = findViewById(R.id.btnForecast);
         btnCurrentLocation = findViewById(R.id.btnCurrentLocation);
+        btnMap = findViewById(R.id.btnMapLocation);
         citySpinner = findViewById(R.id.locationSpinner);
 
-        // Adapter cho Spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.location_list,
@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                // Không xử lý
             }
         });
 
@@ -96,10 +95,13 @@ public class MainActivity extends AppCompatActivity {
 
         btnCurrentLocation.setOnClickListener(v -> fetchCurrentLocation());
 
-        // Hiển thị thời tiết ban đầu
+        btnMap.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MapActivity.class);
+            startActivityForResult(intent, REQUEST_MAP_LOCATION);
+        });
+
         fetchWeather(selectedCity);
     }
-
     private void fetchWeather(String cityName) {
         Retrofit retrofit = ApiClient.getClient(this);
         WeatherService service = retrofit.create(WeatherService.class);
