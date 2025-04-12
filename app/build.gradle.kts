@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -32,12 +33,29 @@ android {
 }
 
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.room.common.jvm)
+    implementation(libs.room.runtime.android)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.work.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+
+    // Room (Local DB)
+    annotationProcessor(libs.room.compiler)
+
+    // Retrofit & GSON (Weather API)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    // Firebase modules
+    implementation(libs.google.firebase.auth)
+    implementation(libs.google.firebase.firestore)
+
 }
