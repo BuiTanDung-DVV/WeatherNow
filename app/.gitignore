@@ -1,3 +1,5 @@
 /build
-google-services.json
 src/main/assets/weather-api-key.json
+src/main/assets/weathernow-firebase-database.json
+src/main/assets/google-maps-key.json
+google-services.json
