@@ -1,7 +1,9 @@
 package com.example.weathernow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "WeatherTest";
 
     private TextView cityText, tempText, descText, humidityText, windText;
+    private Button btnForecast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,12 @@ public class MainActivity extends AppCompatActivity {
         descText = findViewById(R.id.descText);
         humidityText = findViewById(R.id.humidityText);
         windText = findViewById(R.id.windText);
+        btnForecast = findViewById(R.id.btnForecast); // 👉 Thêm nút
+
+        btnForecast.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ForecastActivity.class);
+            startActivity(intent);
+        });
 
         Retrofit retrofit = ApiClient.getClient(this);
         WeatherService service = retrofit.create(WeatherService.class);
@@ -45,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                     JsonObject data = response.body();
                     Log.d(TAG, "Dữ liệu thời tiết: " + data.toString());
 
-                    // Trích xuất thông tin cần thiết
                     String city = data.get("name").getAsString();
                     JsonObject main = data.getAsJsonObject("main");
                     double temp = main.get("temp").getAsDouble();
@@ -61,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
                         description = weather.get("description").getAsString();
                     }
 
-                    // Hiển thị lên giao diện
                     cityText.setText("Thành phố: " + city);
                     tempText.setText("Nhiệt độ: " + temp + "°C");
                     descText.setText("Trạng thái: " + description);

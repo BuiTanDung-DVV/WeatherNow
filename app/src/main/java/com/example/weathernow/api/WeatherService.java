@@ -22,4 +22,12 @@ public interface WeatherService {
             @Query("units") String units,
             @Query("lang") String language
     );
+
+    @GET("forecast")
+    Call<JsonObject> getForecastByCity(
+            @Query("q") String city,
+            @Query("units") String units,
+            @Query("lang") String lang
+    );
+
 }
