@@ -26,6 +26,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -183,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d(TAG, "Thành phố từ GPS: " + city);
                                     selectedCity = city;
                                     fetchWeather(selectedCity); // Gọi API lấy thời tiết cho thành phố
+                                    updateCitySpinner(city); // Cập nhật Spinner với thành phố mới
                                 } else {
                                     Log.e(TAG, "Không thể lấy tên thành phố từ GPS.");
                                     cityText.setText("Không thể xác định thành phố từ vị trí.");
@@ -205,9 +207,41 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void updateCitySpinner(String city) {
+        ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) citySpinner.getAdapter();
+        int position = adapter.getPosition(city);
 
+        if (position == -1) {
+            // Thành phố không có trong danh sách, thêm mới vào dữ liệu
+            Log.d(TAG, "Thành phố không có trong danh sách, thêm mới: " + city);
 
+            // Thêm thành phố vào danh sách trong Spinner
+            addCityToSpinner(city);
+        }
 
+        // Chọn thành phố vừa thêm hoặc đã có
+        citySpinner.setSelection(adapter.getPosition(city)); // Chọn thành phố mới thêm hoặc đã có trong danh sách
+    }
+
+    private void addCityToSpinner(String city) {
+        // Lấy danh sách các thành phố từ resources
+        ArrayAdapter<CharSequence> adapter = (ArrayAdapter<CharSequence>) citySpinner.getAdapter();
+        List<String> cityList = new ArrayList<>();
+
+        // Đọc dữ liệu từ resources
+        String[] cities = getResources().getStringArray(R.array.location_list);
+        for (String cityName : cities) {
+            cityList.add(cityName);
+        }
+
+        // Thêm thành phố mới vào danh sách
+        cityList.add(city);
+
+        // Cập nhật lại dữ liệu cho adapter
+        ArrayAdapter<String> newAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityList);
+        newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(newAdapter);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
