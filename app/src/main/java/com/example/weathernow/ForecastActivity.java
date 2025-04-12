@@ -26,98 +26,104 @@ public class ForecastActivity extends AppCompatActivity {
 
     private static final String TAG = "ForecastActivity";
 
-    private TextView day1Forecast, day2Forecast, day3Forecast, day4Forecast, day5Forecast;
+    private TextView[] forecastViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
 
-        day1Forecast = findViewById(R.id.day1Forecast);
-        day2Forecast = findViewById(R.id.day2Forecast);
-        day3Forecast = findViewById(R.id.day3Forecast);
-        day4Forecast = findViewById(R.id.day4Forecast);
-        day5Forecast = findViewById(R.id.day5Forecast);
+        forecastViews = new TextView[]{
+                findViewById(R.id.day1Forecast),
+                findViewById(R.id.day2Forecast),
+                findViewById(R.id.day3Forecast),
+                findViewById(R.id.day4Forecast),
+                findViewById(R.id.day5Forecast)
+        };
 
+        String cityName = getIntent().getStringExtra("city_name"); // Sửa tên key cho đúng
+        if (cityName == null || cityName.isEmpty()) {
+            cityName = "Hanoi"; // fallback mặc định
+        }
+
+        fetchForecast(cityName);
+    }
+
+    private void fetchForecast(String cityName) {
         Retrofit retrofit = ApiClient.getClient(this);
         WeatherService service = retrofit.create(WeatherService.class);
 
-        Call<JsonObject> call = service.getForecastByCity("Hanoi", "metric", "vi");
-
-        call.enqueue(new Callback<JsonObject>() {
+        service.getForecastByCity(cityName, "metric", "vi").enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    JsonObject data = response.body();
-                    JsonArray list = data.getAsJsonArray("list");
+                if (!response.isSuccessful() || response.body() == null) {
+                    displayError("Lỗi phản hồi: " + response.code());
+                    return;
+                }
 
-                    // Sử dụng LinkedHashMap để giữ thứ tự ngày
-                    Map<String, String> dailyForecast = new LinkedHashMap<>();
+                JsonArray list = response.body().getAsJsonArray("list");
+                if (list == null) {
+                    displayError("Không có dữ liệu dự báo.");
+                    return;
+                }
 
-                    SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-                    SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE, dd/MM", new Locale("vi"));
+                Map<String, String> dailyForecast = parseForecastData(list);
 
-                    for (int i = 0; i < list.size(); i++) {
-                        JsonObject item = list.get(i).getAsJsonObject();
-                        String dt_txt = item.get("dt_txt").getAsString();
-
-                        try {
-                            Date date = inputFormat.parse(dt_txt);
-                            String day = outputFormat.format(date);
-
-                            // Chỉ lấy bản tin dự báo vào 12:00 mỗi ngày
-                            if (dt_txt.contains("12:00:00") && !dailyForecast.containsKey(day)) {
-                                double temp = item.getAsJsonObject("main").get("temp").getAsDouble();
-                                String desc = item.getAsJsonArray("weather")
-                                        .get(0).getAsJsonObject()
-                                        .get("description").getAsString();
-
-                                String forecast = day + ": " + temp + "°C - " + desc;
-                                dailyForecast.put(day, forecast);
-
-                                // Dừng sau 5 ngày
-                                if (dailyForecast.size() == 5) break;
-                            }
-
-                        } catch (Exception e) {
-                            Log.e(TAG, "Lỗi định dạng ngày: " + e.getMessage());
-                        }
+                int i = 0;
+                for (String forecast : dailyForecast.values()) {
+                    if (i < forecastViews.length) {
+                        forecastViews[i++].setText(forecast);
                     }
-
-                    // Gán dữ liệu cho từng TextView
-                    int index = 0;
-                    for (String forecast : dailyForecast.values()) {
-                        switch (index) {
-                            case 0:
-                                day1Forecast.setText(forecast);
-                                break;
-                            case 1:
-                                day2Forecast.setText(forecast);
-                                break;
-                            case 2:
-                                day3Forecast.setText(forecast);
-                                break;
-                            case 3:
-                                day4Forecast.setText(forecast);
-                                break;
-                            case 4:
-                                day5Forecast.setText(forecast);
-                                break;
-                        }
-                        index++;
-                    }
-
-                } else {
-                    day1Forecast.setText("Lỗi phản hồi: " + response.code());
-                    Log.e(TAG, "Lỗi phản hồi: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                day1Forecast.setText("Lỗi kết nối: " + t.getMessage());
-                Log.e(TAG, "Lỗi kết nối: " + t.getMessage(), t);
+                displayError("Lỗi kết nối: " + t.getMessage());
+                Log.e(TAG, "Lỗi kết nối API", t);
             }
         });
+    }
+
+    private Map<String, String> parseForecastData(JsonArray list) {
+        Map<String, String> dailyForecast = new LinkedHashMap<>();
+
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE, dd/MM", new Locale("vi"));
+
+        for (int i = 0; i < list.size(); i++) {
+            try {
+                JsonObject item = list.get(i).getAsJsonObject();
+                String dt_txt = item.get("dt_txt").getAsString();
+
+                if (!dt_txt.contains("12:00:00")) continue;
+
+                Date date = inputFormat.parse(dt_txt);
+                String day = outputFormat.format(date);
+
+                if (dailyForecast.containsKey(day)) continue;
+
+                JsonObject main = item.getAsJsonObject("main");
+                double temp = main.get("temp").getAsDouble();
+
+                JsonObject weather = item.getAsJsonArray("weather").get(0).getAsJsonObject();
+                String desc = weather.get("description").getAsString();
+
+                dailyForecast.put(day, day + ": " + temp + "°C - " + desc);
+
+                if (dailyForecast.size() == 5) break;
+
+            } catch (Exception e) {
+                Log.e(TAG, "Lỗi định dạng hoặc phân tích dữ liệu: " + e.getMessage(), e);
+            }
+        }
+
+        return dailyForecast;
+    }
+
+    private void displayError(String message) {
+        for (TextView view : forecastViews) {
+            view.setText(message);
+        }
     }
 }

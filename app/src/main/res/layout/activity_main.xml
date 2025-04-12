@@ -7,40 +7,63 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
 
+        <!-- Chọn thành phố -->
+        <Spinner
+            android:id="@+id/locationSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Tên thành phố -->
         <TextView
             android:id="@+id/cityText"
+            android:text="Chưa chọn thành phố"
             android:textStyle="bold"
             android:textSize="20sp"
+            android:layout_marginBottom="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Nhiệt độ -->
+        <TextView
+            android:id="@+id/tempText"
+            android:text="Nhiệt độ: -- °C"
+            android:textSize="18sp"
             android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/tempText"
-            android:textSize="18sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
+        <!-- Mô tả thời tiết -->
         <TextView
             android:id="@+id/descText"
+            android:text="Trạng thái: --"
             android:textSize="18sp"
+            android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!-- Độ ẩm -->
         <TextView
             android:id="@+id/humidityText"
+            android:text="Độ ẩm: -- %"
             android:textSize="16sp"
+            android:layout_marginBottom="4dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!-- Tốc độ gió -->
         <TextView
             android:id="@+id/windText"
+            android:text="Gió: -- m/s"
             android:textSize="16sp"
+            android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!-- Nút chuyển màn dự báo -->
         <Button
             android:id="@+id/btnForecast"
             android:layout_width="match_parent"
@@ -48,5 +71,12 @@
             android:text="Dự báo chi tiết"
             android:layout_marginTop="16dp" />
 
+        <!-- Nút lấy vị trí hiện tại -->
+        <Button
+            android:id="@+id/btnCurrentLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lấy thời tiết vị trí hiện tại"
+            android:layout_marginTop="12dp" />
     </LinearLayout>
 </ScrollView>
