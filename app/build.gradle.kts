@@ -58,4 +58,6 @@ dependencies {
     implementation(libs.google.firebase.auth)
     implementation(libs.google.firebase.firestore)
 
+    implementation (libs.play.services.location)
+
 }
