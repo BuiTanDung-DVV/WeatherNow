@@ -12,7 +12,8 @@ Luôn tạo một branch mới trước khi làm việc để tránh ghi đè m�
 
 java/com/example/weathernow/api: Đã hoàn thiện – không sửa đổi.
 
-ForecastActivity.java: Đã hoàn thiện – không sửa đổi.
+ForecastActivity, MapActivity: Đã hoàn thiện – không sửa đổi.
+
 
 ⚠️ Lưu ý khi chỉnh sửa MainActivity.java
 Không được xóa các hàm hiện có trong MainActivity.java. Nếu cần chỉnh sửa, hãy đảm bảo không ảnh hưởng đến các chức năng hiện có.
