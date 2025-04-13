@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView cityText, tempText, descText, humidityText, windText;
     private Spinner citySpinner;
     private Button btnForecast, btnCurrentLocation, btnMap;
-    private String selectedCity = "Hanoi"; // Thành phố mặc định
+    private String selectedCity = "Hanoi";
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -102,6 +102,44 @@ public class MainActivity extends AppCompatActivity {
 
         fetchWeather(selectedCity);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_MAP_LOCATION && resultCode == RESULT_OK && data != null) {
+            double lat = data.getDoubleExtra("lat", 0);
+            double lng = data.getDoubleExtra("lng", 0);
+            String selectedCityFromMap = data.getStringExtra("selected_city");
+
+            if (selectedCityFromMap != null && !selectedCityFromMap.isEmpty()) {
+                selectedCity = selectedCityFromMap;
+                updateCitySpinner(selectedCityFromMap); // cập nhật spinner trước
+                fetchWeather(selectedCity);             // sau đó gọi fetchWeather
+            } else {
+                // Nếu không có tên thành phố, dùng reverse geocoding
+                Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+                    if (addresses != null && !addresses.isEmpty()) {
+                        Address address = addresses.get(0);
+                        String city = address.getAdminArea();
+                        if (city != null) {
+                            selectedCity = city;
+                            fetchWeather(city);
+                            updateCitySpinner(city);
+                        } else {
+                            cityText.setText("Không thể xác định thành phố từ vị trí bản đồ.");
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    cityText.setText("Lỗi geocoder.");
+                }
+            }
+        }
+    }
+
     private void fetchWeather(String cityName) {
         Retrofit retrofit = ApiClient.getClient(this);
         WeatherService service = retrofit.create(WeatherService.class);
