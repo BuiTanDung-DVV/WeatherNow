@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -24,13 +25,11 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // Khởi tạo các thành phần giao diện
         notificationSetting = findViewById(R.id.notificationSetting);
         termsSetting = findViewById(R.id.termsSetting);
         privacySetting = findViewById(R.id.privacySetting);
         languageSpinner = findViewById(R.id.languageSpinner);
 
-        // Khởi tạo SharedPreferences
         sharedPreferences = getSharedPreferences("WeatherNowSettings", MODE_PRIVATE);
 
         // Lưu ngôn ngữ
@@ -55,6 +54,12 @@ public class SettingsActivity extends AppCompatActivity {
         notificationSetting.setOnClickListener(v -> toggleNotification());
         termsSetting.setOnClickListener(v -> openTermsAndConditions());
         privacySetting.setOnClickListener(v -> openPrivacyPolicy());
+
+        // Xử lý sự kiện cho nút quay lại MainActivity
+        Button btnBackToMain = findViewById(R.id.btnBackToMain);
+        btnBackToMain.setOnClickListener(v -> {
+            finish(); // Đóng SettingsActivity và quay lại MainActivity
+        });
     }
 
     private void setupLanguageSpinner() {
