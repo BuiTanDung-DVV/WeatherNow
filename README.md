@@ -1,9 +1,9 @@
 # WeatherNow
 
 Hướng dẫn làm việc nhóm
-cấu trúc đặt key: app/src/main/assets/weather-api-key.json
-                  app/src/main/assets/weathernow-firebase-database.json
-                  app/google-services.json
+cấu trúc đặt key: app/src/main/assets/weather-api-key.json;
+                  app/src/main/assets/weathernow-firebase-database.json;
+                  app/google-services.json;
                   local.properties
 ✅ Tạo Branch mới
 Luôn tạo một branch mới trước khi làm việc để tránh ghi đè mã của người khác đang phát triển.
