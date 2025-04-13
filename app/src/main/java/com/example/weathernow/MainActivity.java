@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         btnForecast.setOnClickListener(v -> {
@@ -114,10 +115,10 @@ public class MainActivity extends AppCompatActivity {
 
             if (selectedCityFromMap != null && !selectedCityFromMap.isEmpty()) {
                 selectedCity = selectedCityFromMap;
-                updateCitySpinner(selectedCityFromMap); // cập nhật spinner trước
-                fetchWeather(selectedCity);             // sau đó gọi fetchWeather
+                updateCitySpinner(selectedCityFromMap); // Cập nhật Spinner trước
+                fetchWeather(selectedCity);             // Sau đó gọi fetchWeather
             } else {
-                // Nếu không có tên thành phố, dùng reverse geocoding
+                // Nếu không có tên thành phố, sử dụng reverse geocoding để xác định thành phố
                 Geocoder geocoder = new Geocoder(this, Locale.getDefault());
                 try {
                     List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
@@ -139,8 +140,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
+    private String standardizeCityName(String city) {
+        if (city.startsWith("Thành phố ")) {
+            return city.replace("Thành phố ", "").trim();
+        }
+        return city;
+    }
     private void fetchWeather(String cityName) {
+        String standardizedCity = standardizeCityName(cityName);
         Retrofit retrofit = ApiClient.getClient(this);
         WeatherService service = retrofit.create(WeatherService.class);
 
@@ -183,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "Lỗi kết nối: " + t.getMessage(), t);
             }
         });
+        Log.d("WeatherTest", "Fetching weather for: " + standardizedCity);
     }
 
     private void fetchCurrentLocation() {
@@ -292,4 +300,22 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume - selectedCity: " + selectedCity);
+
+        if (selectedCity != null && !selectedCity.isEmpty()) {
+            fetchWeather(selectedCity);
+            updateCitySpinner(selectedCity);
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart - selectedCity: " + selectedCity);
+        // Có thể bỏ nếu onResume đã xử lý
+    }
+
 }
