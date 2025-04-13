@@ -17,14 +17,11 @@ public class WeatherEntity {
         public double temperature;
 
         @ColumnInfo(name = "latitude")
-        public double latitude;  // Thêm trường latitude
+        public double latitude;
 
         @ColumnInfo(name = "longitude")
-        public double longitude; // Thêm trường longitude
+        public double longitude;
 
         @ColumnInfo(name = "timestamp")
         public long timestamp;
 }
-
-
-
