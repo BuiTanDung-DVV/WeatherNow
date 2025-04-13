@@ -19,6 +19,9 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.weathernow.api.ApiClient;
 import com.example.weathernow.api.WeatherService;
+import com.example.weathernow.data.AppDatabase;
+import com.example.weathernow.data.WeatherDao;
+import com.example.weathernow.firebase.FirestoreManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -46,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
     private String selectedCity = "Hanoi";
 
     private FusedLocationProviderClient fusedLocationClient;
-
+    AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+    WeatherDao weatherDao = db.weatherDao();
+    FirestoreManager firestoreManager = new FirestoreManager();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
