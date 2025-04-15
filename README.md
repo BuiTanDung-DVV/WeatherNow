@@ -1,5 +1,5 @@
 # WeatherNow
-
+figma:         https://www.figma.com/design/feVxChe8Dt3eLhwHW0PniL/Mobile?node-id=0-1&t=hcPcQYC8z5K6R8pc-1
 Hướng dẫn làm việc nhóm
 cấu trúc đặt key: app/src/main/assets/weather-api-key.json;
                   app/src/main/assets/weathernow-firebase-database.json;
