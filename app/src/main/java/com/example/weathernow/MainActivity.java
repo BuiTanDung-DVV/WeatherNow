@@ -19,6 +19,10 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.weathernow.api.ApiClient;
 import com.example.weathernow.api.WeatherService;
+import com.example.weathernow.data.AppDatabase;
+import com.example.weathernow.data.WeatherDao;
+import com.example.weathernow.data.WeatherEntity;
+import com.example.weathernow.firebase.FirestoreManager;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -44,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     private Spinner citySpinner;
     private Button btnForecast, btnCurrentLocation, btnMap;
     private String selectedCity = "Hanoi";
+    private AppDatabase appDatabase;
+    private FirestoreManager firestoreManager;
+
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -51,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        appDatabase = AppDatabase.getInstance(getApplicationContext());
+        firestoreManager = new FirestoreManager();
 
         cityText = findViewById(R.id.cityText);
         tempText = findViewById(R.id.tempText);
@@ -87,6 +97,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // Đồng bộ dữ liệu từ Firestore vào Room
+        firestoreManager.syncWeatherDataFromCloud(appDatabase.weatherDao());
 
         btnForecast.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ForecastActivity.class);
@@ -151,46 +164,75 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = ApiClient.getClient(this);
         WeatherService service = retrofit.create(WeatherService.class);
 
-        Call<JsonObject> call = service.getWeatherByCity(cityName, "metric", "vi");
+        Call<JsonObject> call = service.getWeatherByCity(standardizedCity, "metric", "vi");
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     JsonObject data = response.body();
                     Log.d(TAG, "Dữ liệu thời tiết: " + data.toString());
 
-                    String city = data.get("name").getAsString();
-                    JsonObject main = data.getAsJsonObject("main");
-                    double temp = main.get("temp").getAsDouble();
-                    int humidity = main.get("humidity").getAsInt();
-                    JsonObject wind = data.getAsJsonObject("wind");
-                    double windSpeed = wind.get("speed").getAsDouble();
-                    JsonArray weatherArray = data.getAsJsonArray("weather");
-                    String description = "";
-                    if (weatherArray.size() > 0) {
-                        JsonObject weather = weatherArray.get(0).getAsJsonObject();
-                        description = weather.get("description").getAsString();
+                    try {
+                        String city = data.get("name").getAsString();
+                        JsonObject main = data.getAsJsonObject("main");
+                        double temp = main.get("temp").getAsDouble();
+                        int humidity = main.get("humidity").getAsInt();
+                        JsonObject wind = data.getAsJsonObject("wind");
+                        double windSpeed = wind.get("speed").getAsDouble();
+                        JsonObject coord = data.getAsJsonObject("coord");
+                        double latitude = coord.get("lat").getAsDouble();
+                        double longitude = coord.get("lon").getAsDouble();
+                        long timestamp = System.currentTimeMillis();
+
+                        JsonArray weatherArray = data.getAsJsonArray("weather");
+                        String description = weatherArray.get(0).getAsJsonObject().get("description").getAsString();
+
+                        WeatherEntity weatherEntity = new WeatherEntity();
+                        weatherEntity.setCity(city);
+                        weatherEntity.setTemperature(temp);
+                        weatherEntity.setDescription(description);
+                        weatherEntity.setHumidity(humidity);
+                        weatherEntity.setWindSpeed(windSpeed);
+                        weatherEntity.setLatitude(latitude);
+                        weatherEntity.setLongitude(longitude);
+                        weatherEntity.setTimestamp(timestamp);
+
+                        // Lưu vào Room
+                        new Thread(() -> {
+                            appDatabase.weatherDao().insertWeather(weatherEntity);
+
+                            runOnUiThread(() -> {
+                                cityText.setText("Thành phố: " + city);
+                                tempText.setText("Nhiệt độ: " + temp + "°C");
+                                descText.setText("Trạng thái: " + description);
+                                humidityText.setText("Độ ẩm: " + humidity + "%");
+                                windText.setText("Gió: " + windSpeed + " m/s");
+                            });
+                        }).start();
+                        WeatherDao weatherDao = appDatabase.weatherDao();
+                        // Lưu vào Firebase Firestore
+                        firestoreManager.saveWeatherData(weatherEntity, weatherDao);
+
+                    } catch (Exception e) {
+                        Log.e(TAG, "Lỗi phân tích JSON: " + e.getMessage(), e);
+                        runOnUiThread(() -> cityText.setText("Lỗi phân tích dữ liệu thời tiết."));
                     }
 
-                    cityText.setText("Thành phố: " + city);
-                    tempText.setText("Nhiệt độ: " + temp + "°C");
-                    descText.setText("Trạng thái: " + description);
-                    humidityText.setText("Độ ẩm: " + humidity + "%");
-                    windText.setText("Gió: " + windSpeed + " m/s");
                 } else {
-                    cityText.setText("Lỗi phản hồi: " + response.code());
                     Log.e(TAG, "Lỗi phản hồi: " + response.code());
+                    runOnUiThread(() -> cityText.setText("Không tìm thấy thành phố hoặc phản hồi lỗi: " + response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                cityText.setText("Lỗi kết nối: " + t.getMessage());
                 Log.e(TAG, "Lỗi kết nối: " + t.getMessage(), t);
+                runOnUiThread(() -> cityText.setText("Không thể kết nối đến máy chủ: " + t.getMessage()));
             }
         });
-        Log.d("WeatherTest", "Fetching weather for: " + standardizedCity);
+
+        Log.d("WeatherTest", "Đang lấy dữ liệu thời tiết cho: " + standardizedCity);
     }
 
     private void fetchCurrentLocation() {

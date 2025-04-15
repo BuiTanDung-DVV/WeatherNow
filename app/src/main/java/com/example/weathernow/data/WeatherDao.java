@@ -14,12 +14,11 @@ public interface WeatherDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<WeatherEntity> weathers);
 
+    @Insert
+    void insertWeather(WeatherEntity weatherEntity);
 
-    @Query("SELECT * FROM weather WHERE city = :city LIMIT 1")
-    LiveData<WeatherEntity> getWeatherByCity(String city);
-
-    @Query("SELECT * FROM weather WHERE latitude = :latitude AND longitude = :longitude LIMIT 1")
-    LiveData<WeatherEntity> getWeatherByCoordinates(double latitude, double longitude);
+    @Query("SELECT * FROM weather WHERE city = :cityName LIMIT 1")
+    WeatherEntity getWeatherByCity(String cityName);
 
     @Query("SELECT * FROM weather")
     List<WeatherEntity> getAll();
