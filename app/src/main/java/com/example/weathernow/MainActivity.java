@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnForecast, btnCurrentLocation, btnMap;
     private String selectedCity = "Hanoi"; // Thành phố mặc định
 
+
     private FusedLocationProviderClient fusedLocationClient;
 
     @Override
