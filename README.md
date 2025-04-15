@@ -12,6 +12,8 @@ Luôn tạo một branch mới trước khi làm việc để tránh ghi đè m�
 
 java/com/example/weathernow/api: Đã hoàn thiện – không sửa đổi.
 
+Firestore Database: Đã hoàn thiện – không sửa đổi.
+
 ForecastActivity, MapActivity: Đã hoàn thiện – không sửa đổi.
 
 
