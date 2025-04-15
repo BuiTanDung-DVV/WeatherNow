@@ -88,4 +88,14 @@
             android:layout_marginTop="12dp" />
 
     </LinearLayout>
+    <!-- Nút chọn chia sẻ -->
+    <Button
+        android:id="@+id/btnShareWeather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chia sẻ thời tiết"
+        android:drawableStart="@drawable/ic_share"
+        android:padding="10dp"
+        android:layout_marginTop="16dp" />
+
 </ScrollView>
