@@ -77,5 +77,6 @@ dependencies {
     implementation(libs.secrets.gradle.plugin)
 
     implementation(libs.play.services.maps)
+    implementation (libs.play.services.base)
 }
 apply(plugin = "com.google.gms.google-services")

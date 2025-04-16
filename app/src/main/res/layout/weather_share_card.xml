@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shareCardRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/share_card_background"
+    android:elevation="6dp">
+
+    <TextView
+        android:id="@+id/shareCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thành phố"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#212121"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/shareTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30°C"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:textColor="#FF5722"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/shareDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trời nắng"
+        android:textSize="18sp"
+        android:textColor="#666666"
+        android:layout_marginTop="4dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        android:layout_marginVertical="16dp"/>
+
+    <TextView
+        android:id="@+id/shareHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Độ ẩm: 60%"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:layout_gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/shareWind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gió: 2.5 m/s"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:layout_marginTop="4dp"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

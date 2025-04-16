@@ -1,4 +1,4 @@
-package com.example.weathernow;
+package com.example.weathernow.activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.weathernow.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;

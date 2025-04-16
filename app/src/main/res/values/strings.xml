@@ -1,13 +1,5 @@
 <resources>
     <string name="app_name">WeatherNow</string>
     <string name="change_language">Change Language</string>
-    <string-array name="location_list">
-        <item>Hanoi</item>
-        <item>Ho Chi Minh City</item>
-        <item>Da Nang</item>
-        <item>Tokyo</item>
-        <item>New York</item>
-        <item>London</item>
-    </string-array>
 
 </resources>
