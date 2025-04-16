@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.example.weathernow.data.AppDatabase;
 import com.example.weathernow.data.WeatherDao;
 import com.example.weathernow.data.WeatherEntity;
 import com.example.weathernow.firebase.FirestoreManager;
+import com.example.weathernow.helper.WeatherShareHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private List<String> cityList = new ArrayList<>();
     private AppDatabase appDatabase;
     private FirestoreManager firestoreManager;
-
+    ImageButton btnShareWeather;
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -113,6 +115,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         fetchWeather(selectedCity);
+
+        btnShareWeather = findViewById(R.id.btnShareWeather);
+
+        btnShareWeather.setOnClickListener(v -> {
+            new Thread(() -> {
+                WeatherEntity latestWeather = appDatabase.weatherDao().getLatestWeatherByCity(selectedCity);
+                runOnUiThread(() -> {
+                    if (latestWeather != null) {
+                        WeatherShareHelper.shareWeatherCard(MainActivity.this, latestWeather);
+                    } else {
+                        Log.e(TAG, "Không có dữ liệu thời tiết để chia sẻ.");
+                        cityText.setText("Không có dữ liệu thời tiết để chia sẻ.");
+                    }
+                });
+            }).start();
+        });
     }
 
     @Override

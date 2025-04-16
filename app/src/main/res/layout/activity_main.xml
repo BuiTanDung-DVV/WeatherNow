@@ -86,6 +86,13 @@
             android:layout_height="wrap_content"
             android:text="Chọn vị trí trên bản đồ"
             android:layout_marginTop="12dp" />
-
+        <ImageButton
+            android:id="@+id/btnShareWeather"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_share"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 </ScrollView>
