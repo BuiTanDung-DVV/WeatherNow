@@ -21,6 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.example.weathernow.activity.ForecastActivity;
+import com.example.weathernow.activity.MapActivity;
 import com.example.weathernow.api.ApiClient;
 import com.example.weathernow.api.WeatherService;
 import com.example.weathernow.data.AppDatabase;
@@ -132,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
             }).start();
         });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -180,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
-
     private void loadCityList() {
         if (isNetworkAvailable()) {
             // Tải danh sách từ Firebase
@@ -214,6 +214,16 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         citySpinner.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        // Đặt vị trí của Spinner dựa trên selectedCity
+        if (!cityNames.isEmpty()) {
+            int cityIndex = cityNames.indexOf(selectedCity);
+            if (cityIndex >= 0 && cityIndex < cityNames.size()) {
+                citySpinner.setSelection(cityIndex);
+            } else {
+                citySpinner.setSelection(0);
+            }
+        }
     }
     @NonNull
     private String standardizeCityName(@NonNull String city) {
@@ -342,8 +352,11 @@ public class MainActivity extends AppCompatActivity {
                                 if (city != null) {
                                     Log.d(TAG, "Thành phố từ GPS: " + city);
                                     selectedCity = city;
-                                    fetchWeather(selectedCity); // Gọi API lấy thời tiết cho thành phố
-                                    updateCitySpinner(List.of(city)); // Cập nhật Spinner với thành phố mới
+                                    if (!cityList.contains(selectedCity)) {
+                                        cityList.add(selectedCity);
+                                    }
+                                    updateCitySpinner(cityList);
+                                    fetchWeather(selectedCity);
                                 } else {
                                     Log.e(TAG, "Không thể lấy tên thành phố từ GPS.");
                                     cityText.setText("Không thể xác định thành phố từ vị trí.");
@@ -370,10 +383,11 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Người dùng đã cấp quyền
                 fetchCurrentLocation();
             } else {
-                Log.e(TAG, "Location permission denied.");
-                cityText.setText("Permission denied. Cannot fetch location.");
+                // Người dùng từ chối quyền
+                cityText.setText("Bạn cần cấp quyền truy cập vị trí để sử dụng tính năng này.");
             }
         }
     }
@@ -381,7 +395,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume - selectedCity: " + selectedCity);
-
         if (selectedCity != null && !selectedCity.isEmpty()) {
             fetchWeather(selectedCity);
             updateCitySpinner(cityList);
@@ -392,5 +405,4 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         Log.d(TAG, "onRestart - selectedCity: " + selectedCity);
     }
-
 }
