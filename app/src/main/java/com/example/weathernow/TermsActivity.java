@@ -1,4 +1,6 @@
 package com.example.weathernow;
 
-public class TermsActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class TermsActivity extends AppCompatActivity {
 }

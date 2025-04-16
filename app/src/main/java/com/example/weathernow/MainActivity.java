@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_MAP_LOCATION = 100;
     private TextView cityText, tempText, descText, humidityText, windText;
     private Spinner citySpinner;
-    private Button btnForecast, btnCurrentLocation, btnMap;
+    private Button btnForecast, btnCurrentLocation, btnMap, btnSettings;
     private String selectedCity = "Hanoi"; // Thành phố mặc định
 
 
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         btnCurrentLocation = findViewById(R.id.btnCurrentLocation);
         btnMap = findViewById(R.id.btnMapLocation);
         citySpinner = findViewById(R.id.locationSpinner);
+        btnSettings = findViewById(R.id.btnSettings);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
@@ -91,6 +92,11 @@ public class MainActivity extends AppCompatActivity {
         btnForecast.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ForecastActivity.class);
             intent.putExtra("city_name", selectedCity);
+            startActivity(intent);
+        });
+        btnSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+
             startActivity(intent);
         });
 

@@ -28,6 +28,10 @@
         </activity>
         <activity android:name=".ForecastActivity" />
         <activity android:name=".MapActivity" />
+        <activity android:name=".SettingsActivity"/>
+        <activity android:name=".TermsActivity" />
+        <activity android:name=".PrivacyActivity" />
+        <activity android:name=".LanguageSettingsActivity" />
 
         <meta-data
             android:name="androidx.work.WorkManagerInitializer"

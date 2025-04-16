@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
-public class LanguageSettingsActivity extends AppCompatActivity {
+public class LanguageSettingsActivity extends BaseActivity {
 
     private RadioGroup languageRadioGroup;
     private RadioButton radioVietnamese, radioEnglish, radioFrench;
@@ -72,22 +72,22 @@ public class LanguageSettingsActivity extends AppCompatActivity {
         editor.putString("language", languageCode);
         editor.apply();
 
-        // Cập nhật ngôn ngữ ứng dụng
-        setLocale(languageCode);
+        Toast.makeText(this, "Ngôn ngữ đã được thay đổi", Toast.LENGTH_SHORT).show();
+        recreate(); // BaseActivity tự cập nhật ngôn ngữ
     }
 
-    private void setLocale(String languageCode) {
-        Locale locale = new Locale(languageCode);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-
-        // Thông báo cho người dùng
-        String message = "Ngôn ngữ đã được thay đổi";
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
-        // Khởi động lại Activity để áp dụng ngôn ngữ mới
-        recreate();
-    }
+//    private void setLocale(String languageCode) {
+//        Locale locale = new Locale(languageCode);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+//
+//        // Thông báo cho người dùng
+//        String message = "Ngôn ngữ đã được thay đổi";
+//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+//
+//        // Khởi động lại Activity để áp dụng ngôn ngữ mới
+//        recreate();
+//    }
 }
