@@ -58,7 +58,7 @@ public class FirestoreManager {
     // Lưu dữ liệu thời tiết lên Firestore
     public void saveWeatherData(@NonNull WeatherEntity weather, @NonNull WeatherDao weatherDao) {
         Map<String, Object> data = weatherToMap(weather);
-        String docId = formatTimestamp(weather.getTimestamp());
+        String docId = weather.getCity() + "_" + weather.getTimestamp();
 
         db.collection(COLLECTION_NAME)
                 .document(docId)
@@ -110,38 +110,6 @@ public class FirestoreManager {
                     }).start();
                 })
                 .addOnFailureListener(e -> Log.e(TAG, "Lỗi khi truy xuất dữ liệu từ Firestore.", e));
-    }
-
-    // Đồng bộ dữ liệu từ Room lên Firestore
-    public void syncLocalToCloud(@NonNull WeatherDao weatherDao) {
-        new Thread(() -> {
-            try {
-                List<WeatherEntity> allLocal = weatherDao.getAll();
-
-                db.collection(COLLECTION_NAME)
-                        .get()
-                        .addOnSuccessListener(snapshot -> {
-                            Set<String> existingTimestamps = new HashSet<>();
-                            for (DocumentSnapshot doc : snapshot.getDocuments()) {
-                                existingTimestamps.add(doc.getId());
-                            }
-
-                            for (WeatherEntity weather : allLocal) {
-                                String docId = formatTimestamp(weather.getTimestamp());
-                                if (!existingTimestamps.contains(docId)) {
-                                    db.collection(COLLECTION_NAME)
-                                            .document(docId)
-                                            .set(weatherToMap(weather))
-                                            .addOnSuccessListener(aVoid -> Log.d(TAG, "Đã đồng bộ: " + weather.getCity()))
-                                            .addOnFailureListener(e -> Log.e(TAG, "Không thể đồng bộ bản ghi thời tiết.", e));
-                                }
-                            }
-                        })
-                        .addOnFailureListener(e -> Log.e(TAG, "Không thể đọc dữ liệu Firestore để đồng bộ.", e));
-            } catch (Exception e) {
-                Log.e(TAG, "Lỗi khi đồng bộ từ local lên cloud.", e);
-            }
-        }).start();
     }
 
     // Lấy danh sách các thành phố không trùng lặp
