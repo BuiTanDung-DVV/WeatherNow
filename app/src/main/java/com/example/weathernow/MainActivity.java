@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_MAP_LOCATION = 100;
     private TextView cityText, tempText, descText, humidityText, windText;
     private Spinner citySpinner;
-    private Button btnForecast, btnCurrentLocation, btnMap;
+    private Button btnCurrentLocation;
     private String selectedCity = "Hanoi";
     private List<String> cityList = new ArrayList<>();
     private AppDatabase appDatabase;
@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                     fetchWeather(selectedCity);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
