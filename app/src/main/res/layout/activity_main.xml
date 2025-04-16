@@ -62,15 +62,6 @@
             android:layout_marginBottom="12dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
-        <!-- Nút xem dự báo -->
-        <Button
-            android:id="@+id/btnForecast"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dự báo chi tiết"
-            android:layout_marginTop="16dp" />
-
         <!-- Nút lấy vị trí hiện tại -->
         <Button
             android:id="@+id/btnCurrentLocation"
@@ -78,14 +69,13 @@
             android:layout_height="wrap_content"
             android:text="Lấy thời tiết vị trí hiện tại"
             android:layout_marginTop="12dp" />
-
-        <!-- Nút chọn trên bản đồ -->
+        <!-- Nút tìm option -->
         <Button
-            android:id="@+id/btnMapLocation"
-            android:layout_width="match_parent"
+            android:id="@+id/btnOptions"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn vị trí trên bản đồ"
-            android:layout_marginTop="12dp" />
+            android:text="Dự báo chi tiết" />
+        <!-- Nút chia sẻ thời tiết -->
         <ImageButton
             android:id="@+id/btnShareWeather"
             android:layout_width="48dp"

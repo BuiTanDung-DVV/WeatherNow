@@ -14,13 +14,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
+import com.example.weathernow.R;
 import com.example.weathernow.activity.ForecastActivity;
 import com.example.weathernow.activity.MapActivity;
 import com.example.weathernow.api.ApiClient;
@@ -35,12 +35,10 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,9 +57,9 @@ public class MainActivity extends AppCompatActivity {
     private AppDatabase appDatabase;
     private FirestoreManager firestoreManager;
     ImageButton btnShareWeather;
+    private Button btnOptions;
 
     private FusedLocationProviderClient fusedLocationClient;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
         descText = findViewById(R.id.descText);
         humidityText = findViewById(R.id.humidityText);
         windText = findViewById(R.id.windText);
-        btnForecast = findViewById(R.id.btnForecast);
         btnCurrentLocation = findViewById(R.id.btnCurrentLocation);
-        btnMap = findViewById(R.id.btnMapLocation);
         citySpinner = findViewById(R.id.locationSpinner);
+        btnOptions = findViewById(R.id.btnOptions);
+        btnShareWeather = findViewById(R.id.btnShareWeather);
 
         loadCityList();
 
@@ -97,28 +95,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        // Đồng bộ dữ liệu từ Firestore vào Room
         firestoreManager.syncWeatherDataFromCloud(appDatabase.weatherDao());
 
-        btnForecast.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ForecastActivity.class);
-            intent.putExtra("city_name", selectedCity);
-            startActivity(intent);
+        btnOptions.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(MainActivity.this, v);
+            popupMenu.getMenuInflater().inflate(R.menu.options_menu, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+
+                if (id == R.id.option_forecast) {
+                    Intent forecastIntent = new Intent(MainActivity.this, ForecastActivity.class);
+                    forecastIntent.putExtra("city_name", selectedCity);
+                    startActivity(forecastIntent);
+                    return true;
+                } else if (id == R.id.option_map) {
+                    Intent mapIntent = new Intent(MainActivity.this, MapActivity.class);
+                    startActivityForResult(mapIntent, REQUEST_MAP_LOCATION);
+                    return true;
+                }
+                return false;
+            });
+            popupMenu.show();
         });
 
         btnCurrentLocation.setOnClickListener(v -> fetchCurrentLocation());
-
-        btnMap.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MapActivity.class);
-            startActivityForResult(intent, REQUEST_MAP_LOCATION);
-        });
-
-        fetchWeather(selectedCity);
-
-        btnShareWeather = findViewById(R.id.btnShareWeather);
 
         btnShareWeather.setOnClickListener(v -> {
             new Thread(() -> {
@@ -133,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
                 });
             }).start();
         });
+
+        fetchWeather(selectedCity);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

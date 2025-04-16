@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/option_forecast"
+        android:title="Dự báo thời tiết chi tiết" />
+    <item
+        android:id="@+id/option_map"
+        android:title="Chọn vị trí trên bản đồ" />
+</menu>
