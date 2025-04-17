@@ -14,12 +14,15 @@ public interface WeatherService {
             @Query("units") String units,
             @Query("lang") String language
     );
-    @GET("forecast")
-    Call<JsonObject> getHourlyForecast(
-            @Query("q") String cityName,
+
+    @GET("weather")
+    Call<JsonObject> getWeatherByCoordinates(
+            @Query("lat") double lat,
+            @Query("lon") double lon,
             @Query("units") String units,
             @Query("lang") String language
     );
+
     @GET("forecast")
     Call<JsonObject> getForecastByCity(
             @Query("q") String city,
