@@ -215,8 +215,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void updateCitySpinner(List<String> cityNames) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, cityNames);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         citySpinner.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -271,9 +271,9 @@ public class MainActivity extends AppCompatActivity {
                             appDatabase.weatherDao().insertWeather(weatherEntity);
 
                             runOnUiThread(() -> {
- /*                               cityText.setText("Thành phố: " + city);*/
-                                tempText.setText(temp + "°C");
-                                descText.setText(description);
+/*                                cityText.setText("Thành phố: " + city);*/
+                                tempText.setText("Nhiệt độ: " + temp + "°C");
+                                descText.setText("Trạng thái: " + description);
                                 humidityText.setText("Độ ẩm: " + humidity + "%");
                                 windText.setText("Gió: " + windSpeed + " m/s");
                             });
