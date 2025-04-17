@@ -47,7 +47,6 @@ android {
     }
 }
 
-
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -58,7 +57,6 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.work.runtime)
-    implementation(libs.firebase.inappmessaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -75,10 +73,10 @@ dependencies {
     implementation(libs.google.firebase.firestore)
 
     implementation (libs.play.services.location)
-    implementation(libs.play.services.maps)
 
     implementation(libs.secrets.gradle.plugin)
 
-    implementation(libs.play.services.maps.v1700)
-
+    implementation(libs.play.services.maps)
+    implementation (libs.play.services.base)
 }
+apply(plugin = "com.google.gms.google-services")

@@ -1,5 +1,5 @@
 # WeatherNow
-
+figma:         https://www.figma.com/design/feVxChe8Dt3eLhwHW0PniL/Mobile?node-id=0-1&t=hcPcQYC8z5K6R8pc-1
 Hướng dẫn làm việc nhóm
 cấu trúc đặt key: app/src/main/assets/weather-api-key.json;
                   app/src/main/assets/weathernow-firebase-database.json;
@@ -12,7 +12,11 @@ Luôn tạo một branch mới trước khi làm việc để tránh ghi đè m�
 
 java/com/example/weathernow/api: Đã hoàn thiện – không sửa đổi.
 
-ForecastActivity.java: Đã hoàn thiện – không sửa đổi.
+Firestore Database ,ROOM: Đã hoàn thiện – không sửa đổi.
+
+ForecastActivity, MapActivity: Đã hoàn thiện – không sửa đổi.
+WeatherShareHelper : Đã hoàn thiện – không sửa đổi.
+
 
 SettingsActivity.java: Đã hoàn thiện – không sửa đổi.
 
@@ -22,3 +26,6 @@ Add PrivacyActivity.java, TermActivity.java, LanguageActivity.java.
 
 ⚠️ Lưu ý khi chỉnh sửa MainActivity.java
 Không được xóa các hàm hiện có trong MainActivity.java. Nếu cần chỉnh sửa, hãy đảm bảo không ảnh hưởng đến các chức năng hiện có.
+
+
+
