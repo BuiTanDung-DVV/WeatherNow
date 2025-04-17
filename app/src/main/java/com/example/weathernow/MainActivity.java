@@ -1,6 +1,7 @@
 package com.example.weathernow;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -51,7 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_MAP_LOCATION = 100;
     private TextView cityText, tempText, descText, humidityText, windText;
     private Spinner citySpinner;
-    private Button btnForecast, btnCurrentLocation, btnMap;
+    private Button btnForecast, btnCurrentLocation;
+
+    private ImageButton btnMap;
+
     private String selectedCity = "Hanoi";
     private List<String> cityList = new ArrayList<>();
     private AppDatabase appDatabase;
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         appDatabase = AppDatabase.getInstance(getApplicationContext());
         firestoreManager = new FirestoreManager();
 
-        cityText = findViewById(R.id.cityText);
+/*        cityText = findViewById(R.id.cityText);*/
         tempText = findViewById(R.id.tempText);
         descText = findViewById(R.id.descText);
         humidityText = findViewById(R.id.humidityText);
@@ -210,8 +215,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void updateCitySpinner(List<String> cityNames) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, cityNames);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         citySpinner.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -266,9 +271,9 @@ public class MainActivity extends AppCompatActivity {
                             appDatabase.weatherDao().insertWeather(weatherEntity);
 
                             runOnUiThread(() -> {
-                                cityText.setText("Thành phố: " + city);
-                                tempText.setText("Nhiệt độ: " + temp + "°C");
-                                descText.setText("Trạng thái: " + description);
+ /*                               cityText.setText("Thành phố: " + city);*/
+                                tempText.setText(temp + "°C");
+                                descText.setText(description);
                                 humidityText.setText("Độ ẩm: " + humidity + "%");
                                 windText.setText("Gió: " + windSpeed + " m/s");
                             });
