@@ -52,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_MAP_LOCATION = 100;
     private TextView cityText, tempText, descText, humidityText, windText;
     private Spinner citySpinner;
-    private Button btnForecast, btnCurrentLocation, btnMap, btnSettings;
+    private Button btnForecast, btnCurrentLocation;
     private String selectedCity = "Hanoi"; // Thành phố mặc định
     private List<String> cityList = new ArrayList<>();
     private AppDatabase appDatabase;
     private FirestoreManager firestoreManager;
-    ImageButton btnShareWeather;
+    ImageButton btnShareWeather,btnMap, btnSettings;
 
     private FusedLocationProviderClient fusedLocationClient;
     @SuppressLint("MissingInflatedId")
@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         appDatabase = AppDatabase.getInstance(getApplicationContext());
         firestoreManager = new FirestoreManager();
 
-        cityText = findViewById(R.id.cityText);
         tempText = findViewById(R.id.tempText);
         descText = findViewById(R.id.descText);
         humidityText = findViewById(R.id.humidityText);
@@ -395,5 +394,4 @@ public class MainActivity extends AppCompatActivity {
         super.onRestart();
         Log.d(TAG, "onRestart - selectedCity: " + selectedCity);
     }
-
 }
