@@ -25,13 +25,14 @@ import retrofit2.Retrofit;
 public class ForecastActivity extends AppCompatActivity {
 
     private static final String TAG = "ForecastActivity";
+
     private TextView[] forecastViews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
-        // Khởi tạo các TextView cho dự báo hàng ngày
+
         forecastViews = new TextView[]{
                 findViewById(R.id.day1Forecast),
                 findViewById(R.id.day2Forecast),
@@ -47,6 +48,7 @@ public class ForecastActivity extends AppCompatActivity {
 
         fetchForecast(cityName);
     }
+
     private void fetchForecast(String cityName) {
         Retrofit retrofit = ApiClient.getClient(this);
         WeatherService service = retrofit.create(WeatherService.class);
@@ -82,6 +84,7 @@ public class ForecastActivity extends AppCompatActivity {
             }
         });
     }
+
     private Map<String, String> parseForecastData(JsonArray list) {
         Map<String, String> dailyForecast = new LinkedHashMap<>();
 
@@ -117,6 +120,7 @@ public class ForecastActivity extends AppCompatActivity {
 
         return dailyForecast;
     }
+
     private void displayError(String message) {
         for (TextView view : forecastViews) {
             view.setText(message);

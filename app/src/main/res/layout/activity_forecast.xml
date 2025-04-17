@@ -8,22 +8,7 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:orientation="vertical">
-        <!-- Tiêu đề cho phần dự báo thời tiết hiện tại -->
-        <TextView
-            android:id="@+id/hourlyForecastTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dự báo thời tiết trong 12 giờ tới"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp" />
-        <!-- RecyclerView cho dự báo thời tiết theo giờ -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/hourlyForecastRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
+
         <!-- Tiêu đề cho phần dự báo thời tiết chi tiết -->
         <TextView
             android:id="@+id/forecastTitle"
@@ -33,6 +18,7 @@
             android:textSize="20sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp" />
+
         <!-- Dự báo thời tiết cho ngày 1 -->
         <TextView
             android:id="@+id/day1Forecast"
@@ -42,6 +28,7 @@
             android:padding="8dp"
             android:layout_marginBottom="8dp"
             android:background="?android:attr/selectableItemBackground" />
+
         <!-- Dự báo thời tiết cho ngày 2 -->
         <TextView
             android:id="@+id/day2Forecast"
@@ -51,6 +38,7 @@
             android:padding="8dp"
             android:layout_marginBottom="8dp"
             android:background="?android:attr/selectableItemBackground" />
+
         <!-- Dự báo thời tiết cho ngày 3 -->
         <TextView
             android:id="@+id/day3Forecast"
@@ -60,6 +48,7 @@
             android:padding="8dp"
             android:layout_marginBottom="8dp"
             android:background="?android:attr/selectableItemBackground" />
+
         <!-- Dự báo thời tiết cho ngày 4 -->
         <TextView
             android:id="@+id/day4Forecast"
@@ -69,6 +58,7 @@
             android:padding="8dp"
             android:layout_marginBottom="8dp"
             android:background="?android:attr/selectableItemBackground" />
+
         <!-- Dự báo thời tiết cho ngày 5 -->
         <TextView
             android:id="@+id/day5Forecast"
@@ -78,5 +68,6 @@
             android:padding="8dp"
             android:layout_marginBottom="8dp"
             android:background="?android:attr/selectableItemBackground" />
+
     </LinearLayout>
 </ScrollView>
