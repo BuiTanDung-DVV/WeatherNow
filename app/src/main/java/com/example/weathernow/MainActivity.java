@@ -52,9 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_MAP_LOCATION = 100;
     private TextView cityText, tempText, descText, humidityText, windText;
     private Spinner citySpinner;
-    private Button btnForecast, btnCurrentLocation;
     private String selectedCity = "Hanoi"; // Thành phố mặc định
-    private List<String> cityList = new ArrayList<>();
+    private final List<String> cityList = new ArrayList<>();
     private AppDatabase appDatabase;
     private FirestoreManager firestoreManager;
     ImageButton btnShareWeather,btnMap, btnSettings;
@@ -69,12 +68,13 @@ public class MainActivity extends AppCompatActivity {
         appDatabase = AppDatabase.getInstance(getApplicationContext());
         firestoreManager = new FirestoreManager();
 
+        cityText = findViewById(R.id.cityText);
         tempText = findViewById(R.id.tempText);
         descText = findViewById(R.id.descText);
         humidityText = findViewById(R.id.humidityText);
         windText = findViewById(R.id.windText);
-        btnForecast = findViewById(R.id.btnForecast);
-        btnCurrentLocation = findViewById(R.id.btnCurrentLocation);
+        Button btnForecast = findViewById(R.id.btnForecast);
+        Button btnCurrentLocation = findViewById(R.id.btnCurrentLocation);
         btnMap = findViewById(R.id.btnMapLocation);
         citySpinner = findViewById(R.id.locationSpinner);
         btnSettings = findViewById(R.id.btnSettings);
@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 String city = parent.getItemAtPosition(position).toString();
                 if (!city.equals(selectedCity)) {
                     selectedCity = city;
+                    cityText.setText(selectedCity);
                     fetchWeather(selectedCity);
                 }
             }
@@ -212,14 +213,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void updateCitySpinner(List<String> cityNames) {
+        if (cityNames == null || cityNames.isEmpty()) {
+            Log.e(TAG, "City list is empty. Cannot update spinner.");
+            return;
+        }
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, cityNames);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         citySpinner.setAdapter(adapter);
-        
+
         if (cityNames.contains(selectedCity)) {
             int cityIndex = cityNames.indexOf(selectedCity);
             citySpinner.setSelection(cityIndex);
-        } else if (!cityNames.isEmpty()) {
+        } else {
+            selectedCity = cityNames.get(0);
+            cityText.setText(selectedCity);
             citySpinner.setSelection(0);
         }
     }
@@ -351,7 +359,11 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d(TAG, "Thành phố từ GPS: " + city);
                                     selectedCity = city;
                                     fetchWeather(selectedCity); // Gọi API lấy thời tiết cho thành phố
-                                    updateCitySpinner(List.of(city)); // Cập nhật Spinner với thành phố mới
+                                    if (!cityList.contains(city)) {
+                                        cityList.add(city);
+                                    }
+                                    cityText.setText(selectedCity);
+                                    updateCitySpinner(cityList);// Cập nhật Spinner với thành phố mới
                                 } else {
                                     Log.e(TAG, "Không thể lấy tên thành phố từ GPS.");
                                     cityText.setText("Không thể xác định thành phố từ vị trí.");
@@ -394,10 +406,5 @@ public class MainActivity extends AppCompatActivity {
             fetchWeather(selectedCity);
             updateCitySpinner(cityList);
         }
-    }
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "onRestart - selectedCity: " + selectedCity);
     }
 }
