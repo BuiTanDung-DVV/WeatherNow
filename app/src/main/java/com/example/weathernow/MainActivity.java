@@ -215,7 +215,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, cityNames);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         citySpinner.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
+        if (cityNames.contains(selectedCity)) {
+            int cityIndex = cityNames.indexOf(selectedCity);
+            citySpinner.setSelection(cityIndex);
+        } else if (!cityNames.isEmpty()) {
+            citySpinner.setSelection(0);
+        }
     }
     @NonNull
     private String standardizeCityName(@NonNull String city) {
