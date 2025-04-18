@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                         WeatherDao weatherDao = appDatabase.weatherDao();
                         // Lưu vào Firebase Firestore
                         firestoreManager.saveWeatherData(weatherEntity, weatherDao);
-
+                        cityText.setText(selectedCity);
                     } catch (Exception e) {
                         Log.e(TAG, "Lỗi phân tích JSON: " + e.getMessage(), e);
                         runOnUiThread(() -> cityText.setText("Lỗi phân tích dữ liệu thời tiết."));

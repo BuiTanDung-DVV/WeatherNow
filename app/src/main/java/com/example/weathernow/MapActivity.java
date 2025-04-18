@@ -8,6 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        SearchView searchView = findViewById(R.id.searchView);
         btnConfirm = findViewById(R.id.btnConfirmLocation);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -48,6 +50,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
+        // Thiết lập SearchView
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchLocation(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         btnConfirm.setOnClickListener(v -> {
             if (currentLatLng != null) {
@@ -63,6 +78,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 Toast.makeText(MapActivity.this, "Vui lòng chọn vị trí", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private void searchLocation(String cityName) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocationName(cityName, 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address address = addresses.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                currentLatLng = latLng;
+
+                // Update map with the searched location
+                if (mMap != null) {
+                    mMap.clear();
+                    marker = mMap.addMarker(new MarkerOptions().position(latLng).title(cityName));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+                }
+            } else {
+                Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error finding location", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
