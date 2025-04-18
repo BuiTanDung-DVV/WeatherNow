@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">WeatherNow</string>
+
+    <!-- Main Activity -->
+    <string name="search_city">Rechercher une ville</string>
+    <string name="open_map">Ouvrir la carte</string>
+    <string name="notification_icon">Icône de notification</string>
+    <string name="weather_icon">Icône météo</string>
+    <string name="city_name">Nom de la ville</string>
+    <string name="temperature_placeholder">-- °C</string>
+    <string name="wind_format">Vent | %1$s m/s</string>
+    <string name="humidity_format">Humidité | %1$s%%</string>
+    <string name="current_location">Position actuelle</string>
+    <string name="detailed_forecast">Prévisions détaillées</string>
+    <string name="settings">Paramètres</string>
+    <string name="share_weather">Partager la météo</string>
+
+    <!-- Weather Share Card -->
+    <string name="share_city_placeholder">Ville</string>
+    <string name="share_temp_placeholder">30°C</string>
+    <string name="share_desc_placeholder">Ciel dégagé</string>
+    <string name="share_humidity_format">Humidité: %1$s%%</string>
+    <string name="share_wind_format">Vent: %1$s m/s</string>
+
+    <!-- Map Activity -->
+    <string name="search_city_hint">Rechercher une ville</string>
+    <string name="confirm_location">Confirmer l\'emplacement</string>
+
+    <!-- Settings Activity -->
+    <string name="back">Retour</string>
+    <string name="notification_settings">Paramètres de notification</string>
+    <string name="language_settings">Paramètres de langue</string>
+    <string name="terms_and_conditions">Conditions d\'utilisation</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+
+    <!-- Language Settings -->
+    <string name="language">Langue</string>
+    <string name="vietnamese">Vietnamien</string>
+    <string name="english">Anglais</string>
+    <string name="french">Français</string>
+
+    <!-- Forecast Activity -->
+    <string name="detailed_weather_forecast">Prévisions météo détaillées</string>
+    <string name="day_forecast_loading">Jour %1$d: (chargement...)</string>
+
+    <!-- Hourly Forecast -->
+    <string name="time_placeholder">12:00</string>
+    <string name="temp_placeholder">25°C</string>
+    <string name="desc_placeholder">Ensoleillé</string>
+
+    <!-- Common -->
+    <string name="loading">Chargement…</string>
+    <string name="error_occurred">Une erreur s\'est produite</string>
+    <string name="retry">Réessayer</string>
+</resources>

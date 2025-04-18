@@ -18,7 +18,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Back"
+            android:contentDescription="@string/back"
             android:src="@drawable/ic_back" />
 
         <!-- Notification Settings -->
@@ -35,7 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Notification Settings"
+                android:text="@string/notification_settings"
                 android:textSize="16sp" />
 
             <ImageView
@@ -58,7 +58,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Language Settings"
+                android:text="@string/language_settings"
                 android:textSize="16sp" />
 
             <ImageView
@@ -81,7 +81,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Terms and Conditions"
+                android:text="@string/terms_and_conditions"
                 android:textSize="16sp" />
 
             <ImageView
@@ -104,7 +104,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Privacy Policy"
+                android:text="@string/privacy_policy"
                 android:textSize="16sp" />
 
             <ImageView
