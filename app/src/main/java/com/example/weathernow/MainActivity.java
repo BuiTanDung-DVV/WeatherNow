@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         appDatabase = AppDatabase.getInstance(getApplicationContext());
         firestoreManager = new FirestoreManager();
 
-/*        cityText = findViewById(R.id.cityText);*/
+        /*        cityText = findViewById(R.id.cityText);*/
         tempText = findViewById(R.id.tempText);
         descText = findViewById(R.id.descText);
         humidityText = findViewById(R.id.humidityText);
@@ -215,8 +215,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void updateCitySpinner(List<String> cityNames) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, cityNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        if (cityNames == null || cityNames.isEmpty()) {
+            return;
+        }
+        // Cập nhật cityList
+        if (!cityList.containsAll(cityNames)) {
+            cityList.addAll(cityNames);
+        }
+        // Cập nhật adapter với layout tùy chỉnh
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, cityList);
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         citySpinner.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -271,11 +279,11 @@ public class MainActivity extends AppCompatActivity {
                             appDatabase.weatherDao().insertWeather(weatherEntity);
 
                             runOnUiThread(() -> {
-/*                                cityText.setText("Thành phố: " + city);*/
-                                tempText.setText("Nhiệt độ: " + temp + "°C");
-                                descText.setText("Trạng thái: " + description);
-                                humidityText.setText("Độ ẩm: " + humidity + "%");
-                                windText.setText("Gió: " + windSpeed + " m/s");
+                                /*                                cityText.setText("Thành phố: " + city);*/
+                                tempText.setText(temp + "°C");
+                                descText.setText(description);
+                                humidityText.setText("Độ ẩm | " + humidity + "%");
+                                windText.setText("Gió | " + windSpeed + "m/s");
                             });
                         }).start();
                         if (!cityList.contains(city)) {
@@ -347,8 +355,11 @@ public class MainActivity extends AppCompatActivity {
                                 if (city != null) {
                                     Log.d(TAG, "Thành phố từ GPS: " + city);
                                     selectedCity = city;
-                                    fetchWeather(selectedCity); // Gọi API lấy thời tiết cho thành phố
-                                    updateCitySpinner(List.of(city)); // Cập nhật Spinner với thành phố mới
+                                    if (!cityList.contains(city)) {
+                                        cityList.add(city);
+                                    }
+                                    fetchWeather(selectedCity);
+                                    updateCitySpinner(cityList); // Truyền toàn bộ danh sách thay vì chỉ một thành phố
                                 } else {
                                     Log.e(TAG, "Không thể lấy tên thành phố từ GPS.");
                                     cityText.setText("Không thể xác định thành phố từ vị trí.");

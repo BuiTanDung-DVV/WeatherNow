@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/cloud_rainy_background"
+    android:background="@drawable/cloud_rainy_background" 
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -12,7 +12,6 @@
         android:orientation="vertical">
 
         <!-- Tiêu đề cho phần dự báo thời tiết chi tiết -->
-
 
         <LinearLayout
             android:layout_width="match_parent"
