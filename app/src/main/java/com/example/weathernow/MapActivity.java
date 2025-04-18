@@ -35,13 +35,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LatLng currentLatLng;
     private Marker marker;
     private View btnConfirm;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        SearchView searchView = findViewById(R.id.searchView);
+        searchView = findViewById(R.id.searchView);
         btnConfirm = findViewById(R.id.btnConfirmLocation);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -50,7 +51,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-        // Thiết lập SearchView
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -64,6 +64,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
+        // Thêm OnClickListener cho SearchView
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false); // Mở rộng thanh tìm kiếm và hiển thị bàn phím
+            }
+        });
         btnConfirm.setOnClickListener(v -> {
             if (currentLatLng != null) {
                 // Lấy tên thành phố từ tọa độ
