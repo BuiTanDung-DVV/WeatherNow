@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/night_background"
-    android:padding="16dp"
-    android:paddingTop="20dp">
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="20dp">
 
         <!-- Chọn thành phố -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,7 +62,7 @@
                 app:srcCompat="@drawable/ic_noti_true" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+        <!-- Tên thành phố -->
 
         <ImageView
             android:id="@+id/imageView4"
@@ -81,14 +81,16 @@
             android:layout_gravity="center"
             android:background="@drawable/infor_card"
             android:orientation="vertical">
-            <!-- Tên thành phố -->
+
             <TextView
                 android:id="@+id/cityText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="City Name"
                 android:layout_gravity="center"
-                android:textSize="16sp" />
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:textSize="22dp"
+                android:layout_height="wrap_content"
+                android:text="T" />
 
             <TextView
                 android:id="@+id/tempText"
@@ -97,6 +99,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp"
                 android:layout_gravity="center"
+                android:textStyle="bold"
                 android:textColor="@color/white"
                 android:text="-- °C"
                 android:textSize="70sp" />
@@ -106,9 +109,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_gravity="center"
-                android:textSize="20dp"
+                android:textSize="22dp"
                 android:textColor="@color/white" />
 
             <LinearLayout
@@ -137,7 +139,7 @@
                         android:layout_marginLeft="8dp"
                         android:textColor="@color/white"
                         android:text="Gió | -- m/s"
-                        android:textSize="20sp" />
+                        android:textSize="22sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -159,7 +161,7 @@
                         android:layout_marginLeft="8dp"
                         android:textColor="@color/white"
                         android:text="Độ ẩm | -- %"
-                        android:textSize="20sp" />
+                        android:textSize="22sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -198,19 +200,21 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="16dp"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/btnSettings"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:contentDescription="@string/app_name"
                 android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="Cài đặt ứng dụng"
+                android:background="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 app:srcCompat="@drawable/ic_set" />
 
             <ImageButton

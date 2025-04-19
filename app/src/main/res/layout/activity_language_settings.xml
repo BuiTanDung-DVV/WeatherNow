@@ -16,19 +16,23 @@
 
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackgroundBorderless"
+
             android:contentDescription="Quay lại"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_back"
+            tools:ignore="TouchTargetSizeCheck" />
+        android:contentDescription="@string/back"
+        android:src="@drawable/ic_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Ngôn ngữ"
+            android:text="@string/language"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -52,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Tiếng Việt"
+            android:text="@string/vietnamese"
             android:textColor="#212121"
             android:textSize="16sp" />
 
@@ -69,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="English"
+            android:text="@string/english"
             android:textColor="#212121"
             android:textSize="16sp" />
 
@@ -86,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
-            android:text="Français"
+            android:text="@string/french"
             android:textColor="#212121"
             android:textSize="16sp" />
     </RadioGroup>
