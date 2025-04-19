@@ -17,10 +17,13 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(
-                            context.getApplicationContext(),
-                            AppDatabase.class,
-                            "weather_database"
-                    ).build();
+                                    context.getApplicationContext(),
+                                    AppDatabase.class,
+                                    "weather_database"
+                            )
+                            .fallbackToDestructiveMigration() // Tự động xoá DB nếu schema thay đổi
+                            .build();
+
                 }
             }
         }

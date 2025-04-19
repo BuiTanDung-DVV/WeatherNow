@@ -71,6 +71,8 @@ public class MainActivity extends BaseActivity {
         appDatabase = AppDatabase.getInstance(getApplicationContext());
         firestoreManager = new FirestoreManager();
 
+
+
         cityText = findViewById(R.id.cityText);
         tempText = findViewById(R.id.tempText);
         descText = findViewById(R.id.descText);

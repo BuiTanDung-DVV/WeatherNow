@@ -5,38 +5,44 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "notifications")
 public class NotificationEntity {
+
+
+
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String message;
+
+    private String content;
     private long timestamp;
 
     // Constructor
-    public NotificationEntity(String message, long timestamp) {
-        this.message = message;
+    public NotificationEntity(String content, long timestamp) {
+        this.content = content;
         this.timestamp = timestamp;
     }
-
-    // Getters and setters
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getMessage() {
-        return message;
+
+    // Getter for content
+    public String getContent() {
+        return content;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
+    // Getter for timestamp
     public long getTimestamp() {
         return timestamp;
     }
 
+    // Setter for content (if needed)
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    // Setter for timestamp (if needed)
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
