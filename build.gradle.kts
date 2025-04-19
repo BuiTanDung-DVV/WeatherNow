@@ -5,10 +5,6 @@ plugins {
 }
 
 buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
     dependencies {
         classpath(libs.google.services)
         classpath("com.android.tools.build:gradle:8.8.0")

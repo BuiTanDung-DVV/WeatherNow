@@ -54,4 +54,12 @@
     <string name="loading">Đang tải…</string>
     <string name="error_occurred">Đã xảy ra lỗi</string>
     <string name="retry">Thử lại</string>
+    <string name="notifications">Thông báo</string>
+
+    <!-- Notifications -->
+    <string name="no_notifications">Không có thông báo nào</string>
+    <string name="notification_title">Thông báo thời tiết</string>
+    <string name="notification_time">%1$s</string>
+    <string name="clear_all">Xóa tất cả</string>
+    <string name="delete_notification">Xóa thông báo</string>
 </resources>

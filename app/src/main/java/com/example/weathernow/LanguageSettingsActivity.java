@@ -2,6 +2,7 @@ package com.example.weathernow;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -10,6 +11,8 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Locale;
 
 public class LanguageSettingsActivity extends BaseActivity {
 
@@ -64,11 +67,17 @@ public class LanguageSettingsActivity extends BaseActivity {
     }
 
     private void changeLanguage(String language) {
-        // Lưu ngôn ngữ mới
-        getSharedPreferences("language_prefs", MODE_PRIVATE)
-            .edit()
-            .putString("language_key", language)
+        // Lưu ngôn ngữ mới vào SharedPreferences
+        sharedPreferences.edit()
+            .putString("language", language)
             .apply();
+
+        // Cập nhật cấu hình ngôn ngữ
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.setLocale(locale);
+        getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 
         // Khởi động lại MainActivity và xóa activity stack
         Intent intent = new Intent(this, MainActivity.class);

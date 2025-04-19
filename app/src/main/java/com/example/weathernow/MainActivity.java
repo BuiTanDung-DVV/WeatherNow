@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import androidx.work.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import com.example.weathernow.data.AppDatabase;
 import com.example.weathernow.data.WeatherDao;
 import com.example.weathernow.data.WeatherEntity;
 import com.example.weathernow.firebase.FirestoreManager;
+import com.example.weathernow.helper.NotificationWorker;
 import com.example.weathernow.helper.WeatherShareHelper;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -39,6 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -136,6 +139,17 @@ public class MainActivity extends BaseActivity {
                 });
             }).start();
         });
+
+        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(
+                NotificationWorker.class,
+                12, TimeUnit.HOURS
+        ).build();
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "notification_scheduler",
+                ExistingPeriodicWorkPolicy.KEEP,
+                request
+        );
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -407,4 +421,5 @@ public class MainActivity extends BaseActivity {
             updateCitySpinner(cityList);
         }
     }
+
 }
