@@ -106,4 +106,3 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return "Không rõ vị trí";
     }
 }
-

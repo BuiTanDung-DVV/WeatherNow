@@ -52,18 +52,13 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_MAP_LOCATION = 100;
     private TextView cityText, tempText, descText, humidityText, windText;
     private Spinner citySpinner;
-    private Button btnForecast, btnCurrentLocation;
-
-    private ImageButton btnMap;
-
-    private String selectedCity = "Hanoi";
-    private List<String> cityList = new ArrayList<>();
+    private String selectedCity = "Hanoi"; // Thành phố mặc định
+    private final List<String> cityList = new ArrayList<>();
     private AppDatabase appDatabase;
     private FirestoreManager firestoreManager;
-    ImageButton btnShareWeather;
+    ImageButton btnShareWeather,btnMap, btnSettings;
 
     private FusedLocationProviderClient fusedLocationClient;
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +68,16 @@ public class MainActivity extends AppCompatActivity {
         appDatabase = AppDatabase.getInstance(getApplicationContext());
         firestoreManager = new FirestoreManager();
 
-        /*        cityText = findViewById(R.id.cityText);*/
+        cityText = findViewById(R.id.cityText);
         tempText = findViewById(R.id.tempText);
         descText = findViewById(R.id.descText);
         humidityText = findViewById(R.id.humidityText);
         windText = findViewById(R.id.windText);
-        btnForecast = findViewById(R.id.btnForecast);
-        btnCurrentLocation = findViewById(R.id.btnCurrentLocation);
+        Button btnForecast = findViewById(R.id.btnForecast);
+        Button btnCurrentLocation = findViewById(R.id.btnCurrentLocation);
         btnMap = findViewById(R.id.btnMapLocation);
         citySpinner = findViewById(R.id.locationSpinner);
+        btnSettings = findViewById(R.id.btnSettings);
 
         loadCityList();
 
@@ -91,15 +87,14 @@ public class MainActivity extends AppCompatActivity {
                 String city = parent.getItemAtPosition(position).toString();
                 if (!city.equals(selectedCity)) {
                     selectedCity = city;
+                    cityText.setText(selectedCity);
                     fetchWeather(selectedCity);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -112,13 +107,18 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        btnSettings.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+
+            startActivity(intent);
+        });
+
         btnCurrentLocation.setOnClickListener(v -> fetchCurrentLocation());
 
         btnMap.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MapActivity.class);
             startActivityForResult(intent, REQUEST_MAP_LOCATION);
         });
-
         fetchWeather(selectedCity);
 
         btnShareWeather = findViewById(R.id.btnShareWeather);
@@ -137,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
             }).start();
         });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -185,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
-
     private void loadCityList() {
         if (isNetworkAvailable()) {
             // Tải danh sách từ Firebase
@@ -216,17 +214,22 @@ public class MainActivity extends AppCompatActivity {
     }
     private void updateCitySpinner(List<String> cityNames) {
         if (cityNames == null || cityNames.isEmpty()) {
+            Log.e(TAG, "City list is empty. Cannot update spinner.");
             return;
         }
-        // Cập nhật cityList
-        if (!cityList.containsAll(cityNames)) {
-            cityList.addAll(cityNames);
-        }
-        // Cập nhật adapter với layout tùy chỉnh
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, cityList);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, cityNames);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         citySpinner.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
+        if (cityNames.contains(selectedCity)) {
+            int cityIndex = cityNames.indexOf(selectedCity);
+            citySpinner.setSelection(cityIndex);
+        } else {
+            selectedCity = cityNames.get(0);
+            cityText.setText(selectedCity);
+            citySpinner.setSelection(0);
+        }
     }
     @NonNull
     private String standardizeCityName(@NonNull String city) {
@@ -279,11 +282,11 @@ public class MainActivity extends AppCompatActivity {
                             appDatabase.weatherDao().insertWeather(weatherEntity);
 
                             runOnUiThread(() -> {
-                                /*                                cityText.setText("Thành phố: " + city);*/
+                                /*                               cityText.setText("Thành phố: " + city);*/
                                 tempText.setText(temp + "°C");
                                 descText.setText(description);
-                                humidityText.setText("Độ ẩm | " + humidity + "%");
-                                windText.setText("Gió | " + windSpeed + "m/s");
+                                humidityText.setText("Độ ẩm: " + humidity + "%");
+                                windText.setText("Gió: " + windSpeed + " m/s");
                             });
                         }).start();
                         if (!cityList.contains(city)) {
@@ -355,11 +358,12 @@ public class MainActivity extends AppCompatActivity {
                                 if (city != null) {
                                     Log.d(TAG, "Thành phố từ GPS: " + city);
                                     selectedCity = city;
+                                    fetchWeather(selectedCity); // Gọi API lấy thời tiết cho thành phố
                                     if (!cityList.contains(city)) {
                                         cityList.add(city);
                                     }
-                                    fetchWeather(selectedCity);
-                                    updateCitySpinner(cityList); // Truyền toàn bộ danh sách thay vì chỉ một thành phố
+                                    cityText.setText(selectedCity);
+                                    updateCitySpinner(cityList);// Cập nhật Spinner với thành phố mới
                                 } else {
                                     Log.e(TAG, "Không thể lấy tên thành phố từ GPS.");
                                     cityText.setText("Không thể xác định thành phố từ vị trí.");
@@ -403,10 +407,4 @@ public class MainActivity extends AppCompatActivity {
             updateCitySpinner(cityList);
         }
     }
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d(TAG, "onRestart - selectedCity: " + selectedCity);
-    }
-
 }

@@ -15,14 +15,6 @@ public interface WeatherService {
             @Query("lang") String language
     );
 
-    @GET("weather")
-    Call<JsonObject> getWeatherByCoordinates(
-            @Query("lat") double lat,
-            @Query("lon") double lon,
-            @Query("units") String units,
-            @Query("lang") String language
-    );
-
     @GET("forecast")
     Call<JsonObject> getForecastByCity(
             @Query("q") String city,
