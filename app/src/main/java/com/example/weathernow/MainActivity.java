@@ -266,6 +266,9 @@ public class MainActivity extends BaseActivity {
 
                         JsonArray weatherArray = data.getAsJsonArray("weather");
                         String description = weatherArray.get(0).getAsJsonObject().get("description").getAsString();
+                        if (description != null && !description.isEmpty()) {
+                            description = description.substring(0, 1).toUpperCase() + description.substring(1);
+                        }
 
                         WeatherEntity weatherEntity = new WeatherEntity();
                         weatherEntity.setCity(city);
@@ -278,13 +281,14 @@ public class MainActivity extends BaseActivity {
                         weatherEntity.setTimestamp(timestamp);
 
                         // Lưu vào Room
+                        String finalDescription = description;
                         new Thread(() -> {
                             appDatabase.weatherDao().insertWeather(weatherEntity);
 
                             runOnUiThread(() -> {
-                                /*                               cityText.setText("Thành phố: " + city);*/
-                                tempText.setText(temp + "°C");
-                                descText.setText(description);
+                                cityText.setText("Thành phố: " + city);
+                                tempText.setText(Math.round(temp) + "°C");
+                                descText.setText(finalDescription);
                                 humidityText.setText("Độ ẩm: " + humidity + "%");
                                 windText.setText("Gió: " + windSpeed + " m/s");
                             });

@@ -1,73 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical"
+    android:background="@drawable/cloud_rainy_background"
+    tools:context=".ForecastActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
-        <!-- Tiêu đề cho phần dự báo thời tiết chi tiết -->
+        <ImageButton
+            android:id="@+id/imageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/app_name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_back" />
+
         <TextView
             android:id="@+id/forecastTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/detailed_weather_forecast"
-            android:textSize="20sp"
+            android:text="Quay lại"
+            android:textSize="25sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!-- Dự báo thời tiết cho ngày 1 -->
+    <!-- Phần Dự báo theo giờ -->
+    <HorizontalScrollView
+        android:id="@+id/hourlyForecastScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:contentDescription="@string/app_name"
+        android:layout_marginTop="30dp"
+        android:clipToPadding="false"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/hourlyForecastContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+            <!-- Các item sẽ được thêm vào động bằng code Java -->
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- Phần ScrollView cũ của bạn (Giữ nguyên) -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
         <TextView
-            android:id="@+id/day1Forecast"
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dự báo 5 ngày"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_calendar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Phần dự báo theo ngày -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/day_forecast_loading"
-            android:padding="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/selectableItemBackground" />
+            android:orientation="vertical">
 
-        <!-- Dự báo thời tiết cho ngày 2 -->
-        <TextView
-            android:id="@+id/day2Forecast"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/day_forecast_loading"
-            android:padding="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/selectableItemBackground" />
+            <!-- Ngày 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/selectableItemBackground">
 
-        <!-- Dự báo thời tiết cho ngày 3 -->
-        <TextView
-            android:id="@+id/day3Forecast"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/day_forecast_loading"
-            android:padding="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/selectableItemBackground" />
+                <ImageView
+                    android:id="@+id/day1Icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="16dp"/>
 
-        <!-- Dự báo thời tiết cho ngày 4 -->
-        <TextView
-            android:id="@+id/day4Forecast"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/day_forecast_loading"
-            android:padding="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/selectableItemBackground" />
+                <TextView
+                    android:id="@+id/day1Forecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày 1: (đang tải...)"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
 
-        <!-- Dự báo thời tiết cho ngày 5 -->
-        <TextView
-            android:id="@+id/day5Forecast"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/day_forecast_loading"
-            android:padding="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/selectableItemBackground" />
+            <!-- Ngày 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/selectableItemBackground">
 
-    </LinearLayout>
-</ScrollView>
+                <ImageView
+                    android:id="@+id/day2Icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="16dp"/>
+
+                <TextView
+                    android:id="@+id/day2Forecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày 2: (đang tải...)"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <!-- Ngày 3 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/day3Icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="16dp"/>
+
+                <TextView
+                    android:id="@+id/day3Forecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày 3: (đang tải...)"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <!-- Ngày 4 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/day4Icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="16dp"/>
+
+                <TextView
+                    android:id="@+id/day4Forecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày 4: (đang tải...)"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <!-- Ngày 5 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/day5Icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="16dp"/>
+
+                <TextView
+                    android:id="@+id/day5Forecast"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="Ngày 5: (đang tải...)"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
