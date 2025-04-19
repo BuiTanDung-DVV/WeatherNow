@@ -83,10 +83,20 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/cityText"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:textSize="22dp"
+                android:layout_height="wrap_content"
+                android:text="T" />
+
+            <TextView
                 android:id="@+id/tempText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp"
                 android:layout_gravity="center"
                 android:textStyle="bold"
@@ -195,7 +205,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/btnSetting"
+                android:id="@+id/btnSettings"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:contentDescription="@string/app_name"

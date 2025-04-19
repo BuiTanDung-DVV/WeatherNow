@@ -33,10 +33,10 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        notificationSetting = findViewById(R.id.notificationSetting);
+/*        notificationSetting = findViewById(R.id.notificationSetting);
         termsSetting = findViewById(R.id.termsSetting);
         privacySetting = findViewById(R.id.privacySetting);
-        languageSetting = findViewById(R.id.languageSetting);
+        languageSetting = findViewById(R.id.languageSetting);*/
 
         sharedPreferences = getSharedPreferences("WeatherNowSettings", MODE_PRIVATE);
 
