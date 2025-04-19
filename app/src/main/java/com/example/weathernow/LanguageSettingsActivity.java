@@ -1,18 +1,15 @@
 package com.example.weathernow;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.Locale;
 
 public class LanguageSettingsActivity extends BaseActivity {
 
@@ -62,32 +59,21 @@ public class LanguageSettingsActivity extends BaseActivity {
             } else {
                 languageCode = "fr";
             }
-            saveLanguage(languageCode);
+            changeLanguage(languageCode);
         });
     }
 
-    private void saveLanguage(String languageCode) {
-        // Lưu ngôn ngữ vào SharedPreferences
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("language", languageCode);
-        editor.apply();
+    private void changeLanguage(String language) {
+        // Lưu ngôn ngữ mới
+        getSharedPreferences("language_prefs", MODE_PRIVATE)
+            .edit()
+            .putString("language_key", language)
+            .apply();
 
-        Toast.makeText(this, "Ngôn ngữ đã được thay đổi", Toast.LENGTH_SHORT).show();
-        recreate(); // BaseActivity tự cập nhật ngôn ngữ
+        // Khởi động lại MainActivity và xóa activity stack
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
-
-//    private void setLocale(String languageCode) {
-//        Locale locale = new Locale(languageCode);
-//        Locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-//
-//        // Thông báo cho người dùng
-//        String message = "Ngôn ngữ đã được thay đổi";
-//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-//
-//        // Khởi động lại Activity để áp dụng ngôn ngữ mới
-//        recreate();
-//    }
 }

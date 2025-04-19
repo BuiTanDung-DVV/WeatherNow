@@ -1,5 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App Name -->
     <string name="app_name">WeatherNow</string>
-    <string name="change_language">Change Language</string>
 
+    <!-- Main Activity -->
+    <string name="search_city">Tìm kiếm thành phố</string>
+    <string name="open_map">Mở bản đồ</string>
+    <string name="notification_icon">Biểu tượng thông báo</string>
+    <string name="weather_icon">Biểu tượng thời tiết</string>
+    <string name="city_name">Tên thành phố</string>
+    <string name="temperature_placeholder">-- °C</string>
+    <string name="wind_format">Gió | %1$s m/s</string>
+    <string name="humidity_format">Độ ẩm | %1$s%%</string>
+    <string name="current_location">Vị trí hiện tại</string>
+    <string name="detailed_forecast">Dự báo chi tiết</string>
+    <string name="settings">Cài đặt</string>
+    <string name="share_weather">Chia sẻ thời tiết</string>
+
+    <!-- Weather Share Card -->
+    <string name="share_city_placeholder">Thành phố</string>
+    <string name="share_temp_placeholder">30°C</string>
+    <string name="share_desc_placeholder">Trời nắng</string>
+    <string name="share_humidity_format">Độ ẩm: %1$s%%</string>
+    <string name="share_wind_format">Gió: %1$s m/s</string>
+
+    <!-- Map Activity -->
+    <string name="search_city_hint">Tìm kiếm thành phố</string>
+    <string name="confirm_location">Chọn vị trí này</string>
+
+    <!-- Settings Activity -->
+    <string name="back">Quay lại</string>
+    <string name="notification_settings">Cài đặt thông báo</string>
+    <string name="language_settings">Cài đặt ngôn ngữ</string>
+    <string name="terms_and_conditions">Điều khoản sử dụng</string>
+    <string name="privacy_policy">Chính sách bảo mật</string>
+
+    <!-- Language Settings -->
+    <string name="language">Ngôn ngữ</string>
+    <string name="vietnamese">Tiếng Việt</string>
+    <string name="english">Tiếng Anh</string>
+    <string name="french">Tiếng Pháp</string>
+
+    <!-- Forecast Activity -->
+    <string name="detailed_weather_forecast">Dự báo thời tiết chi tiết</string>
+    <string name="day_forecast_loading">Ngày %1$d: (đang tải...)</string>
+
+    <!-- Hourly Forecast -->
+    <string name="time_placeholder">12:00</string>
+    <string name="temp_placeholder">25°C</string>
+    <string name="desc_placeholder">Trời nắng</string>
+
+    <!-- Common -->
+    <string name="loading">Đang tải…</string>
+    <string name="error_occurred">Đã xảy ra lỗi</string>
+    <string name="retry">Thử lại</string>
 </resources>

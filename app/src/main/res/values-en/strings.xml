@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">WeatherNow</string>
+
+    <!-- Main Activity -->
+    <string name="search_city">Search city</string>
+    <string name="open_map">Open map</string>
+    <string name="notification_icon">Notification icon</string>
+    <string name="weather_icon">Weather icon</string>
+    <string name="city_name">City Name</string>
+    <string name="temperature_placeholder">-- °C</string>
+    <string name="wind_format">Wind | %1$s m/s</string>
+    <string name="humidity_format">Humidity | %1$s%%</string>
+    <string name="current_location">Current Location</string>
+    <string name="detailed_forecast">Detailed Forecast</string>
+    <string name="settings">Settings</string>
+    <string name="share_weather">Share Weather</string>
+
+    <!-- Weather Share Card -->
+    <string name="share_city_placeholder">City</string>
+    <string name="share_temp_placeholder">30°C</string>
+    <string name="share_desc_placeholder">Clear Sky</string>
+    <string name="share_humidity_format">Humidity: %1$s%%</string>
+    <string name="share_wind_format">Wind: %1$s m/s</string>
+
+    <!-- Map Activity -->
+    <string name="search_city_hint">Search for a city</string>
+    <string name="confirm_location">Confirm Location</string>
+
+    <!-- Settings Activity -->
+    <string name="back">Back</string>
+    <string name="notification_settings">Notification Settings</string>
+    <string name="language_settings">Language Settings</string>
+    <string name="terms_and_conditions">Terms and Conditions</string>
+    <string name="privacy_policy">Privacy Policy</string>
+
+    <!-- Language Settings -->
+    <string name="language">Language</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="english">English</string>
+    <string name="french">French</string>
+
+    <!-- Forecast Activity -->
+    <string name="detailed_weather_forecast">Detailed Weather Forecast</string>
+    <string name="day_forecast_loading">Day %1$d: (loading...)</string>
+
+    <!-- Hourly Forecast -->
+    <string name="time_placeholder">12:00</string>
+    <string name="temp_placeholder">25°C</string>
+    <string name="desc_placeholder">Clear Sky</string>
+
+    <!-- Common -->
+    <string name="loading">Loading…</string>
+    <string name="error_occurred">An error occurred</string>
+    <string name="retry">Retry</string>
+</resources>
