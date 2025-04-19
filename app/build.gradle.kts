@@ -62,6 +62,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation (libs.guava)
 
+
     // Room (Local DB)
     annotationProcessor(libs.room.compiler)
 
@@ -78,5 +79,10 @@ dependencies {
 
     implementation(libs.play.services.maps)
     implementation (libs.play.services.base)
+    implementation("androidx.work:work-runtime:2.7.1")
+
+
 }
+
+
 apply(plugin = "com.google.gms.google-services")

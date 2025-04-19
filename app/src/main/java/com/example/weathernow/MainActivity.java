@@ -72,7 +72,6 @@ public class MainActivity extends BaseActivity {
         firestoreManager = new FirestoreManager();
 
 
-
         cityText = findViewById(R.id.cityText);
         tempText = findViewById(R.id.tempText);
         descText = findViewById(R.id.descText);
@@ -152,6 +151,13 @@ public class MainActivity extends BaseActivity {
                 ExistingPeriodicWorkPolicy.KEEP,
                 request
         );
+
+        PeriodicWorkRequest notificationWorkRequest =
+                new PeriodicWorkRequest.Builder(WeatherNotificationWorker.class, 6, TimeUnit.HOURS)
+                        .build();
+
+        // Enqueue công việc gửi thông báo định kỳ
+        WorkManager.getInstance(this).enqueue(notificationWorkRequest);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -423,5 +429,4 @@ public class MainActivity extends BaseActivity {
             updateCitySpinner(cityList);
         }
     }
-
 }

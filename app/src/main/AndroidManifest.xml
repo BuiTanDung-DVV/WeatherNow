@@ -17,12 +17,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherNow"
-
         tools:targetApi="31">
-        <!-- Đăng ký AuthActivity -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+
+        <!-- Đăng ký các activity -->
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -36,6 +34,7 @@
         <activity android:name=".PrivacyActivity"/>
         <activity android:name=".TermsActivity"/>
         <activity android:name=".NotificationActivity"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -45,9 +44,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <meta-data
             android:name="androidx.work.WorkManagerInitializer"
             android:value="androidx.work.WorkManagerInitializer" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_MAPS_API_KEY}" />
