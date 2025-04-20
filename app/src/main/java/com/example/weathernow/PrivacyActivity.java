@@ -2,7 +2,7 @@ package com.example.weathernow;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class PrivacyActivity extends BaseActivity {
+public class PrivacyActivity extends MainActivity {
     {
     }
 }

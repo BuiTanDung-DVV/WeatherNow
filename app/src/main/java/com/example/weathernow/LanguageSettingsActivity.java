@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
-public class LanguageSettingsActivity extends BaseActivity {
+public class LanguageSettingsActivity extends MainActivity {
 
     private RadioGroup languageRadioGroup;
     private RadioButton radioVietnamese, radioEnglish, radioFrench;
