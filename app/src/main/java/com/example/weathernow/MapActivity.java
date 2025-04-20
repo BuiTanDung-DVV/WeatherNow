@@ -28,13 +28,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-class MapActivity extends BaseActivity implements OnMapReadyCallback {
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
     private LatLng currentLatLng;
     private Marker marker;
-    private View btnConfirm;
     private SearchView searchView;
 
     @Override
@@ -43,7 +42,7 @@ class MapActivity extends BaseActivity implements OnMapReadyCallback {
         setContentView(R.layout.activity_map);
 
         searchView = findViewById(R.id.searchView);
-        btnConfirm = findViewById(R.id.btnConfirmLocation);
+        View btnConfirm = findViewById(R.id.btnConfirmLocation);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -64,16 +63,10 @@ class MapActivity extends BaseActivity implements OnMapReadyCallback {
             }
         });
 
-        // Thêm OnClickListener cho SearchView
-        searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                searchView.setIconified(false); // Mở rộng thanh tìm kiếm và hiển thị bàn phím
-            }
-        });
+        searchView.setOnClickListener(v -> searchView.setIconified(false));
+
         btnConfirm.setOnClickListener(v -> {
             if (currentLatLng != null) {
-                // Lấy tên thành phố từ tọa độ
                 String selectedCityName = getCityNameFromLatLng(currentLatLng);
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("lat", currentLatLng.latitude);
@@ -86,6 +79,7 @@ class MapActivity extends BaseActivity implements OnMapReadyCallback {
             }
         });
     }
+
     private void searchLocation(String cityName) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
@@ -95,7 +89,6 @@ class MapActivity extends BaseActivity implements OnMapReadyCallback {
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 currentLatLng = latLng;
 
-                // Update map with the searched location
                 if (mMap != null) {
                     mMap.clear();
                     marker = mMap.addMarker(new MarkerOptions().position(latLng).title(cityName));
@@ -114,7 +107,6 @@ class MapActivity extends BaseActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Kiểm tra quyền truy cập vị trí
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);

@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public class SettingsActivity extends BaseActivity {
 
-    private LinearLayout notificationSetting, termsSetting, privacySetting, languageSetting;
+    private LinearLayout notificationLayout, termsSetting, privacySetting, languageSetting;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -33,16 +33,16 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-/*        notificationSetting = findViewById(R.id.notificationSetting);
-        termsSetting = findViewById(R.id.termsSetting);
-        privacySetting = findViewById(R.id.privacySetting);
-        languageSetting = findViewById(R.id.languageSetting);*/
+        notificationLayout = findViewById(R.id.notificationLayout);
+        termsSetting = findViewById(R.id.termsLayout);
+        privacySetting = findViewById(R.id.privacyLayout);
+        languageSetting = findViewById(R.id.languageLayout);
 
         sharedPreferences = getSharedPreferences("WeatherNowSettings", MODE_PRIVATE);
 
         ImageButton btnBack = findViewById(R.id.btnBack);
 
-        notificationSetting.setOnClickListener(v -> toggleNotification());
+        notificationLayout.setOnClickListener(v -> toggleNotification());
         languageSetting.setOnClickListener(v -> openLanguageSettings());
         termsSetting.setOnClickListener(v -> openTermsAndConditions());
         privacySetting.setOnClickListener(v -> openPrivacyPolicy());

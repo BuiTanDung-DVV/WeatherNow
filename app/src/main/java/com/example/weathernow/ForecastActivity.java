@@ -27,7 +27,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-class ForecastActivity extends BaseActivity {
+public class ForecastActivity extends AppCompatActivity {
 
     private static final String TAG = "ForecastActivity";
 
@@ -42,11 +42,8 @@ class ForecastActivity extends BaseActivity {
 
         hourlyForecastContainer = findViewById(R.id.hourlyForecastContainer);
 
-        // Thêm xử lý sự kiện click cho nút quay lại
         ImageButton btnBack = findViewById(R.id.imageView);
-        btnBack.setOnClickListener(v -> {
-            finish(); // Kết thúc Activity hiện tại để quay về MainActivity
-        });
+        btnBack.setOnClickListener(v -> finish());
 
         forecastViews = new TextView[]{
                 findViewById(R.id.day1Forecast),
@@ -158,25 +155,25 @@ class ForecastActivity extends BaseActivity {
 
     private int getIconResourceForCode(String iconCode) {
         switch (iconCode) {
-            case "01d": return R.drawable.ic_clear; // Trời nắng ban ngày
-            case "01n": return R.drawable.ic_fullmoon; // Trời quang ban đêm
-            case "02d": return R.drawable.ic_sunny;// Mây thưa ban ngày
-            case "02n": return R.drawable.ic_night; // Mây thưa ban đêm
+            case "01d": return R.drawable.ic_clear;
+            case "01n": return R.drawable.ic_fullmoon;
+            case "02d": return R.drawable.ic_sunny;
+            case "02n": return R.drawable.ic_night;
             case "03d": return R.drawable.ic_cloudy;
-            case "03n": return R.drawable.ic_cloudy; // Nhiều mây
+            case "03n": return R.drawable.ic_cloudy;
             case "04d": return R.drawable.ic_cloudy;
-            case "04n": return R.drawable.ic_night_cloudy; // Mây đen
+            case "04n": return R.drawable.ic_night_cloudy;
             case "09d": return R.drawable.ic_rainy;
-            case "09n": return R.drawable.ic_night_rain; // Mưa rào
-            case "10d": return R.drawable.ic_cloudy_rainy; // Mưa
-            case "10n": return R.drawable.ic_night_rain; // Mưa
-            case "11d": return R.drawable.ic_thunder; // Giông bão
-            case "11n": return R.drawable.ic_thunder; // Giông bão
+            case "09n": return R.drawable.ic_night_rain;
+            case "10d": return R.drawable.ic_cloudy_rainy;
+            case "10n": return R.drawable.ic_night_rain;
+            case "11d": return R.drawable.ic_thunder;
+            case "11n": return R.drawable.ic_thunder;
             case "13d": return R.drawable.ic_cloudy;
-            case "13n": return R.drawable.ic_cloudy; // Tuyết
+            case "13n": return R.drawable.ic_cloudy;
             case "50d": return R.drawable.ic_cloudy;
-            case "50n": return R.drawable.ic_cloudy; // Sương mù
-            default: return R.drawable.ic_cloudy; // Mặc định
+            case "50n": return R.drawable.ic_cloudy;
+            default: return R.drawable.ic_cloudy;
         }
     }
 
@@ -217,7 +214,7 @@ class ForecastActivity extends BaseActivity {
 
         for (HourlyForecast forecast : hourlyForecasts) {
             LinearLayout itemView = (LinearLayout) getLayoutInflater().inflate(
-                R.layout.hourly_forecast_item, hourlyForecastContainer, false);
+                    R.layout.hourly_forecast_item, hourlyForecastContainer, false);
 
             TextView timeView = itemView.findViewById(R.id.timeText);
             TextView tempView = itemView.findViewById(R.id.tempText);
@@ -226,7 +223,6 @@ class ForecastActivity extends BaseActivity {
             timeView.setText(forecast.getTime());
             tempView.setText(String.format("%.1f°C", forecast.getTemperature()));
 
-            // Sử dụng icon local thay vì tải từ URL
             iconView.setImageResource(forecast.getIconResourceId());
 
             hourlyForecastContainer.addView(itemView);

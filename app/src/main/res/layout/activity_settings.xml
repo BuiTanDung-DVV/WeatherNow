@@ -148,7 +148,6 @@
                 android:layout_weight="1"
                 android:text="Điều khoản sử dụng"
                 android:textColor="@color/black"
-                android:text="@string/terms_and_conditions"
                 android:textSize="16sp" />
 
             <ImageView
