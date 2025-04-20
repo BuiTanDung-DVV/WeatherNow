@@ -5,25 +5,47 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Configuration;
-
+import androidx.annotation.NonNull;
 import java.util.Locale;
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        SharedPreferences prefs = newBase.getSharedPreferences("WeatherNowSettings", MODE_PRIVATE);
-        String lang = prefs.getString("language", "vi");
-        Context context = updateLocale(newBase, lang);
-        super.attachBaseContext(context);
-    }
-
-    private Context updateLocale(Context context, String languageCode) {
-        Locale locale = new Locale(languageCode);
+    protected void attachBaseContext(@NonNull Context newBase) {
+        // Lấy ngôn ngữ đã lưu
+        Locale locale = new Locale(getStoredLanguage(newBase));
         Locale.setDefault(locale);
 
-        Configuration config = new Configuration();
+        // Tạo cấu hình mới với locale đã chọn
+        Configuration config = new Configuration(newBase.getResources().getConfiguration());
         config.setLocale(locale);
-        return context.createConfigurationContext(config);
+        
+        // Áp dụng cấu hình mới
+        super.attachBaseContext(newBase.createConfigurationContext(config));
+    }
+
+    private String getStoredLanguage(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("language_prefs", Context.MODE_PRIVATE);
+        return prefs.getString("language_key", "vi");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Kiểm tra và cập nhật ngôn ngữ mỗi khi activity được hiển thị
+        String currentLang = getStoredLanguage(this);
+        updateLocaleIfNeeded(currentLang);
+    }
+
+    private void updateLocaleIfNeeded(String currentLang) {
+        Locale currentLocale = Locale.getDefault();
+        if (!currentLocale.getLanguage().equals(currentLang)) {
+            Locale newLocale = new Locale(currentLang);
+            Locale.setDefault(newLocale);
+            Configuration config = new Configuration(getResources().getConfiguration());
+            config.setLocale(newLocale);
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            recreate();
+        }
     }
 }
