@@ -59,4 +59,9 @@
     <string name="loading">Chargement…</string>
     <string name="error_occurred">Une erreur s\'est produite</string>
     <string name="retry">Réessayer</string>
+
+    <!-- Notification Activity -->
+    <string name="notification_title">Titre de la notification</string>
+    <string name="notification_message">La notification saffichera ici...</string>
+
 </resources>

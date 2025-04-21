@@ -61,5 +61,8 @@
     <string name="loading">Đang tải…</string>
     <string name="error_occurred">Đã xảy ra lỗi</string>
     <string name="retry">Thử lại</string>
-    <!-- Weather Share -->
+
+    <!-- Notification Activity -->
+    <string name="notification_title">Thông báo</string>
+    <string name="notification_message">Thông báo sẽ hiển thị tại đây...</string>
 </resources>

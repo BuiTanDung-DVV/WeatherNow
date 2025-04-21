@@ -413,7 +413,6 @@ public class MainActivity extends AppCompatActivity {
         // Cập nhật ngôn ngữ qua LocaleHelper
         String currentLang = LocaleHelper.getStoredLanguage(this);
         LocaleHelper.updateLocale(this, currentLang);
-         // Tải lại Activity nếu ngôn ngữ thay đổi (tùy chọn)
         // Giữ nguyên logic cũ của MainActivity
         Log.d(TAG, "onResume - selectedCity: " + selectedCity);
         if (selectedCity != null && !selectedCity.isEmpty()) {

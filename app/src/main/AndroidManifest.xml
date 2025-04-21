@@ -37,6 +37,7 @@
         <activity android:name=".LanguageSettingsActivity"/>
         <activity android:name=".PrivacyActivity"/>
         <activity android:name=".TermsActivity"/>
+        <activity android:name=".NotificationActivity"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

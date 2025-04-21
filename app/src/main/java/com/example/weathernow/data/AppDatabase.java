@@ -5,7 +5,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {WeatherEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {NotificationEntity.class, WeatherEntity.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract WeatherDao weatherDao();
 
@@ -18,11 +18,15 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(
                             context.getApplicationContext(),
                             AppDatabase.class,
-                            "weather_database"
-                    ).build();
+                            "weathernow_db"
+                    )
+                            .fallbackToDestructiveMigration()
+                            .build();
                 }
             }
         }
         return INSTANCE;
     }
+
+    public abstract NotificationDao notificationDao();
 }

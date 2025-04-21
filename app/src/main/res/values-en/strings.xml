@@ -59,4 +59,9 @@
     <string name="loading">Loading…</string>
     <string name="error_occurred">An error occurred</string>
     <string name="retry">Retry</string>
+
+    <!-- Notification Activity -->
+    <string name="notification_title">WeatherNow Notification</string>
+    <string name="notification_message">The notification will be displayed here...</string>
+
 </resources>

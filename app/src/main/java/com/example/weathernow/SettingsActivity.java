@@ -49,7 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         ImageButton btnBack = findViewById(R.id.btnBack);
 
-        notificationLayout.setOnClickListener(v -> toggleNotification());
+        notificationLayout.setOnClickListener(v -> openNotificationActivity());
         languageSetting.setOnClickListener(v -> openLanguageSettings());
         termsSetting.setOnClickListener(v -> openTermsAndConditions());
         privacySetting.setOnClickListener(v -> openPrivacyPolicy());
@@ -60,22 +60,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
-    }
-    private void toggleNotification() {
-        // Đọc trạng thái thông báo hiện tại
-        boolean notificationsEnabled = sharedPreferences.getBoolean("notifications", true);
-
-        // Lưu trạng thái mới (đảo ngược)
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("notifications", !notificationsEnabled);
-        editor.apply();
-
-        // Thông báo cho người dùng
-        String message = notificationsEnabled ? "Thông báo đã tắt" : "Thông báo đã bật";
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-
-        createNotificationChannel(); // chỉ cần gọi 1 lần
-        showSystemNotification(message); // hiện trên thanh thông báo
     }
 
     private void openLanguageSettings() {
@@ -95,39 +79,11 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PrivacyActivity.class);
         startActivity(intent);
     }
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "Kênh thông báo chính";
-            String description = "Thông báo từ ứng dụng WeatherNow";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("weather_channel", name, importance);
-            channel.setDescription(description);
-
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
-            }
-        }
+    private void openNotificationActivity(){
+        Intent intent = new Intent(this, NotificationActivity.class);
+        startActivity(intent);
     }
 
-    private void showSystemNotification(String message) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                // Chưa được cấp quyền, không hiển thị thông báo
-                Toast.makeText(this, "Cần cấp quyền thông báo", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "weather_channel")
-                .setSmallIcon(R.drawable.ic_notification) // đảm bảo bạn có icon này trong drawable
-                .setContentTitle("WeatherNow")
-                .setContentText(message)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(1001, builder.build());
-    }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

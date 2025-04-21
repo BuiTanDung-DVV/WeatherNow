@@ -246,6 +246,5 @@ public class ForecastActivity extends AppCompatActivity {
         // Kiểm tra và cập nhật ngôn ngữ
         String currentLang = LocaleHelper.getStoredLanguage(this);
         LocaleHelper.updateLocale(this, currentLang);
-        // Tải lại Activity nếu ngôn ngữ thay đổi (tùy chọn)
     }
 }
