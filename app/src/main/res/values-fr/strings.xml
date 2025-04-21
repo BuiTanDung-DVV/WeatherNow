@@ -44,6 +44,11 @@
     <!-- Forecast Activity -->
     <string name="detailed_weather_forecast">Prévisions météo détaillées</string>
     <string name="day_forecast_loading">Jour %1$d: (chargement...)</string>
+    <string name="day_forescast">Prévisions sur 5 jours</string>
+    <string name="day_forecast_loading2">Jour %2$d: (chargement...)</string>
+    <string name="day_forecast_loading3">Jour %2$d: (chargement...)</string>
+    <string name="day_forecast_loading4">Jour %2$d: (chargement...)</string>
+    <string name="day_forecast_loading5">Jour %2$d: (chargement...)</string>
 
     <!-- Hourly Forecast -->
     <string name="time_placeholder">12:00</string>

@@ -1,5 +1,6 @@
 package com.example.weathernow;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,11 +24,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     private LinearLayout notificationLayout, termsSetting, privacySetting, languageSetting;
     private SharedPreferences sharedPreferences;
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Lấy ngôn ngữ đã lưu và áp dụng
+        String language = LocaleHelper.getStoredLanguage(newBase);
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, language));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,6 +138,14 @@ public class SettingsActivity extends BaseActivity {
                 Toast.makeText(this, "Bạn đã từ chối quyền thông báo", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Kiểm tra và cập nhật ngôn ngữ
+        String currentLang = LocaleHelper.getStoredLanguage(this);
+        LocaleHelper.updateLocale(this, currentLang);
+         // Tải lại Activity nếu ngôn ngữ thay đổi (tùy chọn)
     }
 
 

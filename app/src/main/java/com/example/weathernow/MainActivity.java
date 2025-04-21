@@ -45,7 +45,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "WeatherTest";
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -60,6 +60,12 @@ public class MainActivity extends BaseActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
     @SuppressLint("MissingInflatedId")
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Sử dụng LocaleHelper thay vì logic cũ
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getStoredLanguage(newBase)));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -404,11 +410,16 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // Cập nhật ngôn ngữ qua LocaleHelper
+        String currentLang = LocaleHelper.getStoredLanguage(this);
+        LocaleHelper.updateLocale(this, currentLang);
+         // Tải lại Activity nếu ngôn ngữ thay đổi (tùy chọn)
+        // Giữ nguyên logic cũ của MainActivity
         Log.d(TAG, "onResume - selectedCity: " + selectedCity);
-
         if (selectedCity != null && !selectedCity.isEmpty()) {
             fetchWeather(selectedCity);
             updateCitySpinner(cityList);
         }
     }
+
 }

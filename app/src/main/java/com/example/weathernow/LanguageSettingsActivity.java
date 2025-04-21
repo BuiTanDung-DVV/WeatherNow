@@ -1,5 +1,6 @@
 package com.example.weathernow;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,31 +12,38 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class LanguageSettingsActivity extends BaseActivity {
+public class LanguageSettingsActivity extends AppCompatActivity {
 
     private RadioGroup languageRadioGroup;
     private RadioButton radioVietnamese, radioEnglish, radioFrench;
     private SharedPreferences sharedPreferences;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        // Lấy ngôn ngữ đã lưu từ SharedPreferences và thiết lập lại ngữ cảnh (context) với ngôn ngữ đó
+        String language = LocaleHelper.getStoredLanguage(newBase);
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, language));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language_settings);
 
-        // Khởi tạo SharedPreferences
-        sharedPreferences = getSharedPreferences("WeatherNowSettings", MODE_PRIVATE);
+        // Khởi tạo SharedPreferences để lưu/cập nhật dữ liệu người dùng
+        sharedPreferences = getSharedPreferences("language_prefs", MODE_PRIVATE);
 
-        // Tìm các view trong layout
+        // Ánh xạ các thành phần giao diện trong layout với biến Java
         languageRadioGroup = findViewById(R.id.languageRadioGroup);
         radioVietnamese = findViewById(R.id.radioVietnamese);
         radioEnglish = findViewById(R.id.radioEnglish);
         radioFrench = findViewById(R.id.radioFrench);
         ImageButton btnBack = findViewById(R.id.btnBack);
 
-        // Xử lý sự kiện cho nút quay lại
+        // Gán sự kiện click cho nút "Quay lại" → đóng Activity hiện tại
         btnBack.setOnClickListener(v -> finish());
 
-        // Đặt ngôn ngữ đã chọn
+        // Đặt ngôn ngữ được chọn hiện tại dựa vào dữ liệu đã lưu
         String currentLanguage = sharedPreferences.getString("language", "vi");
         switch (currentLanguage) {
             case "vi":
@@ -49,7 +57,7 @@ public class LanguageSettingsActivity extends BaseActivity {
                 break;
         }
 
-        // Lắng nghe sự kiện khi chọn ngôn ngữ
+        // Gán sự kiện khi người dùng thay đổi lựa chọn ngôn ngữ
         languageRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             String languageCode;
             if (checkedId == R.id.radioVietnamese) {
@@ -59,21 +67,31 @@ public class LanguageSettingsActivity extends BaseActivity {
             } else {
                 languageCode = "fr";
             }
+            // Gọi hàm thay đổi ngôn ngữ
             changeLanguage(languageCode);
         });
     }
 
     private void changeLanguage(String language) {
-        // Lưu ngôn ngữ mới
+        // Lưu lại ngôn ngữ mới được chọn vào SharedPreferences
         getSharedPreferences("language_prefs", MODE_PRIVATE)
-            .edit()
-            .putString("language_key", language)
-            .apply();
+                .edit()
+                .putString("language", language)
+                .apply();
 
-        // Khởi động lại MainActivity và xóa activity stack
+        // Khởi động lại MainActivity, đồng thời xóa toàn bộ stack của Activity trước đó để đảm bảo ngôn ngữ được áp dụng từ đầu
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        finish();
+        finish(); // Đóng LanguageSettingsActivity
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Khi activity quay lại trạng thái foreground, cập nhật lại ngôn ngữ nếu có thay đổi
+        String currentLang = LocaleHelper.getStoredLanguage(this);
+        LocaleHelper.updateLocale(this, currentLang);
+        // Nếu muốn có thể thêm xử lý reload Activity nếu cần thiết
     }
 }

@@ -1,5 +1,6 @@
 package com.example.weathernow;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -34,7 +35,12 @@ public class ForecastActivity extends AppCompatActivity {
     private TextView[] forecastViews;
     private ImageView[] forecastIcons;
     private LinearLayout hourlyForecastContainer;
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Lấy ngôn ngữ đã lưu và áp dụng
+        String language = LocaleHelper.getStoredLanguage(newBase);
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, language));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -233,5 +239,13 @@ public class ForecastActivity extends AppCompatActivity {
         for (TextView view : forecastViews) {
             view.setText(message);
         }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Kiểm tra và cập nhật ngôn ngữ
+        String currentLang = LocaleHelper.getStoredLanguage(this);
+        LocaleHelper.updateLocale(this, currentLang);
+        // Tải lại Activity nếu ngôn ngữ thay đổi (tùy chọn)
     }
 }

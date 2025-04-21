@@ -44,6 +44,13 @@
     <!-- Forecast Activity -->
     <string name="detailed_weather_forecast">Dự báo thời tiết chi tiết</string>
     <string name="day_forecast_loading">Ngày %1$d: (đang tải...)</string>
+    <string name="day_forecast_loading2">Ngày %2$d: (đang tải...)</string>
+    <string name="day_forecast_loading3">Ngày %2$d: (đang tải...)</string>
+    <string name="day_forecast_loading4">Ngày %2$d: (đang tải...)</string>
+    <string name="day_forecast_loading5">Ngày %2$d: (đang tải...)</string>
+
+
+    <string name="day_forescast">Dự báo 5 ngày</string>
 
     <!-- Hourly Forecast -->
     <string name="time_placeholder">12:00</string>
@@ -54,4 +61,5 @@
     <string name="loading">Đang tải…</string>
     <string name="error_occurred">Đã xảy ra lỗi</string>
     <string name="retry">Thử lại</string>
+    <!-- Weather Share -->
 </resources>

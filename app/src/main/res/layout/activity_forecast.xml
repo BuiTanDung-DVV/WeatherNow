@@ -30,7 +30,7 @@
             android:id="@+id/forecastTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quay lại"
+            android:text="@string/back"
             android:textSize="25sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Dự báo 5 ngày"
+            android:text="@string/day_forescast"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -131,7 +131,7 @@
                     android:id="@+id/day1Forecast"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ngày 1: (đang tải...)"
+                    android:text="@string/day_forecast_loading"
                     android:textSize="20dp"
                     android:textColor="@color/white"/>
             </LinearLayout>
@@ -156,7 +156,7 @@
                     android:id="@+id/day2Forecast"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ngày 2: (đang tải...)"
+                    android:text="@string/day_forecast_loading2"
                     android:textSize="20dp"
                     android:textColor="@color/white"/>
             </LinearLayout>
@@ -181,7 +181,7 @@
                     android:id="@+id/day3Forecast"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ngày 3: (đang tải...)"
+                    android:text="@string/day_forecast_loading3"
                     android:textSize="20dp"
                     android:textColor="@color/white"/>
             </LinearLayout>
@@ -206,7 +206,7 @@
                     android:id="@+id/day4Forecast"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ngày 4: (đang tải...)"
+                    android:text="@string/day_forecast_loading4"
                     android:textSize="20dp"
                     android:textColor="@color/white"/>
             </LinearLayout>
@@ -232,7 +232,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
-                    android:text="Ngày 5: (đang tải...)"
+                    android:text="@string/day_forecast_loading5"
                     android:textColor="@color/white"/>
             </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.example.weathernow;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -35,7 +36,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LatLng currentLatLng;
     private Marker marker;
     private SearchView searchView;
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // Lấy ngôn ngữ đã lưu và áp dụng
+        String language = LocaleHelper.getStoredLanguage(newBase);
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, language));
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,5 +147,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
         return "Không rõ vị trí";
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Kiểm tra và cập nhật ngôn ngữ
+        String currentLang = LocaleHelper.getStoredLanguage(this);
+        LocaleHelper.updateLocale(this, currentLang);
+        // Tải lại Activity nếu ngôn ngữ thay đổi (tùy chọn)
     }
 }

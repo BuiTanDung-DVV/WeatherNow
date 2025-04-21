@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Cài đặt"
+            android:text="@string/settings"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Thông báo"
+                android:text="@string/notification_settings"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Ngôn ngữ"
+                android:text="@string/language_settings"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Điều khoản sử dụng"
+                android:text="@string/terms_and_conditions"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
