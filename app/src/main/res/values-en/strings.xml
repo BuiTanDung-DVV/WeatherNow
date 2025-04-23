@@ -21,8 +21,8 @@
     <string name="share_city_placeholder">City</string>
     <string name="share_temp_placeholder">30°C</string>
     <string name="share_desc_placeholder">Clear Sky</string>
-    <string name="share_humidity_format">Humidity: %1$s%%</string>
-    <string name="share_wind_format">Wind: %1$s m/s</string>
+    <string name="share_humidity_format">Humidity: %1$d%%</string>
+    <string name="share_wind_format">Wind: %1$.2f m/s</string>
 
     <!-- Map Activity -->
     <string name="search_city_hint">Search for a city</string>

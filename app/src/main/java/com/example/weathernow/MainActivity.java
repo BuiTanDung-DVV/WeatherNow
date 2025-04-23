@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import com.example.weathernow.data.WeatherDao;
 import com.example.weathernow.data.WeatherEntity;
 import com.example.weathernow.firebase.FirestoreManager;
 import com.example.weathernow.helper.WeatherShareHelper;
+import com.example.weathernow.helper.WeatherUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -246,9 +248,10 @@ public class MainActivity extends AppCompatActivity {
     private void fetchWeather(String cityName) {
         String standardizedCity = standardizeCityName(cityName);
         Retrofit retrofit = ApiClient.getClient(this);
+        //set ngôn ngữ
         WeatherService service = retrofit.create(WeatherService.class);
-
-        Call<JsonObject> call = service.getWeatherByCity(standardizedCity, "metric", "vi");
+        String languageCode = LocaleHelper.getStoredLanguage(this);
+        Call<JsonObject> call = service.getWeatherByCity(standardizedCity, "metric", languageCode);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -275,6 +278,9 @@ public class MainActivity extends AppCompatActivity {
                             description = description.substring(0, 1).toUpperCase() + description.substring(1);
                         }
 
+                        String standardizedDescription = WeatherUtils.mapLocalizedDescription(description);
+                        int weatherIcon = WeatherUtils.getWeatherIcon(standardizedDescription);
+
                         WeatherEntity weatherEntity = new WeatherEntity();
                         weatherEntity.setCity(city);
                         weatherEntity.setTemperature(temp);
@@ -286,16 +292,21 @@ public class MainActivity extends AppCompatActivity {
                         weatherEntity.setTimestamp(timestamp);
 
                         // Lưu vào Room
-                        String finalDescription = description;
+                        assert description != null;
+                        String finalDescription = description.toLowerCase();
+
                         new Thread(() -> {
                             appDatabase.weatherDao().insertWeather(weatherEntity);
 
                             runOnUiThread(() -> {
-                                cityText.setText("Thành phố: " + city);
+                                cityText.setText(getString(R.string.share_city_placeholder) + ": " + city);
                                 tempText.setText(Math.round(temp) + "°C");
                                 descText.setText(finalDescription);
-                                humidityText.setText("Độ ẩm: " + humidity + "%");
-                                windText.setText("Gió: " + windSpeed + " m/s");
+                                humidityText.setText(String.format(getString(R.string.share_humidity_format), humidity));
+                                windText.setText(String.format(getString(R.string.share_wind_format), windSpeed));
+
+                                ImageView weatherImageView = findViewById(R.id.imageView4);
+                                weatherImageView.setImageResource(weatherIcon);
                             });
                         }).start();
                         if (!cityList.contains(city)) {
@@ -412,6 +423,12 @@ public class MainActivity extends AppCompatActivity {
         // Cập nhật ngôn ngữ qua LocaleHelper
         String currentLang = LocaleHelper.getStoredLanguage(this);
         LocaleHelper.updateLocale(this, currentLang);
+
+        cityText.setText(getString(R.string.share_city_placeholder));
+        tempText.setText(getString(R.string.temperature_placeholder));
+        descText.setText(getString(R.string.share_desc_placeholder));
+        humidityText.setText(getString(R.string.share_humidity_format).replace("%1$d", "--"));
+        windText.setText(getString(R.string.share_wind_format).replace("%1$.2f", "--"));
 
         Log.d(TAG, "onResume - selectedCity: " + selectedCity);
         if (selectedCity != null && !selectedCity.isEmpty()) {
