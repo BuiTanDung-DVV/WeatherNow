@@ -89,6 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
         loadCityList();
 
+        ImageView notificationIcon = findViewById(R.id.imageView2);
+        notificationIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+            startActivity(intent);
+        });
+
         citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, android.view.View view, int position, long id) {
