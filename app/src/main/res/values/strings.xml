@@ -21,8 +21,8 @@
     <string name="share_city_placeholder">Thành phố</string>
     <string name="share_temp_placeholder">30°C</string>
     <string name="share_desc_placeholder">Trời nắng</string>
-    <string name="share_humidity_format">Độ ẩm: %1$s%%</string>
-    <string name="share_wind_format">Gió: %1$s m/s</string>
+    <string name="share_humidity_format">Độ ẩm: %1$d%%</string>
+    <string name="share_wind_format">Gió: %1$.2f m/s</string>
 
     <!-- Map Activity -->
     <string name="search_city_hint">Tìm kiếm thành phố</string>

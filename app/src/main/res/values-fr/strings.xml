@@ -21,8 +21,8 @@
     <string name="share_city_placeholder">Ville</string>
     <string name="share_temp_placeholder">30°C</string>
     <string name="share_desc_placeholder">Ciel dégagé</string>
-    <string name="share_humidity_format">Humidité: %1$s%%</string>
-    <string name="share_wind_format">Vent: %1$s m/s</string>
+    <string name="share_humidity_format">Humidité: %1$d%%</string>
+    <string name="share_wind_format">Vent: %1$.2f m/s</string>
 
     <!-- Map Activity -->
     <string name="search_city_hint">Rechercher une ville</string>
