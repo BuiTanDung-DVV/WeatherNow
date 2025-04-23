@@ -168,9 +168,6 @@ public class NotificationActivity extends AppCompatActivity {
         notificationManager.notify(1, notificationBuilder.build());
     }
 
-
-
-
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "weather_channel";
@@ -195,6 +192,5 @@ public class NotificationActivity extends AppCompatActivity {
         LocaleHelper.updateLocale(this, currentLang);
 
     }
-
 
 }

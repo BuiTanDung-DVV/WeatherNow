@@ -47,7 +47,7 @@ import retrofit2.Retrofit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "WeatherTest";
+    private static final String TAG = "WeatherNow";
     private static final int REQUEST_LOCATION_PERMISSION = 1;
     private static final int REQUEST_MAP_LOCATION = 100;
     private TextView cityText, tempText, descText, humidityText, windText;
@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("MissingInflatedId")
     @Override
     protected void attachBaseContext(Context newBase) {
-        // Sử dụng LocaleHelper thay vì logic cũ
         super.attachBaseContext(LocaleHelper.setLocale(newBase, LocaleHelper.getStoredLanguage(newBase)));
     }
 
@@ -413,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
         // Cập nhật ngôn ngữ qua LocaleHelper
         String currentLang = LocaleHelper.getStoredLanguage(this);
         LocaleHelper.updateLocale(this, currentLang);
-        // Giữ nguyên logic cũ của MainActivity
+
         Log.d(TAG, "onResume - selectedCity: " + selectedCity);
         if (selectedCity != null && !selectedCity.isEmpty()) {
             fetchWeather(selectedCity);

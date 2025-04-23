@@ -1,4 +1,4 @@
-package com.example.weathernow;
+package com.example.weathernow.helper;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.weathernow.R;
 import com.example.weathernow.data.NotificationEntity;
 
 import java.text.SimpleDateFormat;
