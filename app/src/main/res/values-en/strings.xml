@@ -44,12 +44,12 @@
     <!-- Forecast Activity -->
     <string name="detailed_weather_forecast">Detailed Weather Forecast</string>
     <string name="day_forecast_loading">Day %1$d: (loading...)</string>
-    <string name="day_forescast">5-day forecast</string>
     <string name="day_forecast_loading2">Day %2$d: (loading...)</string>
     <string name="day_forecast_loading3">Day %2$d: (loading...)</string>
     <string name="day_forecast_loading4">Day %2$d: (loading...)</string>
     <string name="day_forecast_loading5">Day %2$d: (loading...)</string>
 
+    <string name="day_forescast">5-day forecast</string>
     <!-- Hourly Forecast -->
     <string name="time_placeholder">12:00</string>
     <string name="temp_placeholder">25°C</string>

@@ -60,11 +60,11 @@
             android:orientation="horizontal"
             android:paddingTop="8dp"
             android:paddingBottom="8dp">
-            <!-- Các item sẽ được thêm vào động bằng code Java -->
+            <!-- Các item sẽ được thêm vào động  -->
         </LinearLayout>
     </HorizontalScrollView>
 
-    <!-- Phần ScrollView cũ của bạn (Giữ nguyên) -->
+    <!--  ScrollView  -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:paddingStart="16dp"

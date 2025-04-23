@@ -144,6 +144,14 @@ public class NotificationActivity extends AppCompatActivity {
         }
     }
     private void createWeatherNotification(WeatherEntity weather) {
+        // Kiểm tra quyền gửi thông báo
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Cần cấp quyền thông báo", Toast.LENGTH_SHORT).show();
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_NOTIFICATION_PERMISSION);
+                return;
+            }
+        }
         // Tạo PendingIntent cho notification (có thể mở activity khi người dùng nhấn vào thông báo)
         Intent intent = new Intent(this, NotificationActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -152,7 +160,6 @@ public class NotificationActivity extends AppCompatActivity {
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
-
 
         // Tạo notification với thông tin thời tiết
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "weather_channel")

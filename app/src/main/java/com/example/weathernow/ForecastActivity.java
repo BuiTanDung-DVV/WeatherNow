@@ -78,8 +78,8 @@ public class ForecastActivity extends AppCompatActivity {
     private void fetchForecast(String cityName) {
         Retrofit retrofit = ApiClient.getClient(this);
         WeatherService service = retrofit.create(WeatherService.class);
-
-        service.getForecastByCity(cityName, "metric", "vi").enqueue(new Callback<JsonObject>() {
+        String languageCode = LocaleHelper.getStoredLanguage(this);
+        service.getForecastByCity(cityName, "metric", languageCode).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (!response.isSuccessful() || response.body() == null) {
@@ -117,9 +117,12 @@ public class ForecastActivity extends AppCompatActivity {
     private Map<String, String> parseForecastData(JsonArray list) {
         Map<String, String> dailyForecast = new LinkedHashMap<>();
         int iconIndex = 0;
-
+        // Lấy ngôn ngữ đã lưu từ SharedPreferences
+        String languageCode = LocaleHelper.getStoredLanguage(this);
+        Locale currentLocale = new Locale(languageCode);
+        // Đặt định dạng ngày tháng theo ngôn ngữ đã lưu
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE", new Locale("vi"));
+        SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE", currentLocale);
 
         for (int i = 0; i < list.size(); i++) {
             try {
