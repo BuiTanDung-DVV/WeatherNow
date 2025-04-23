@@ -1,4 +1,4 @@
-package com.example.weathernow;
+package com.example.weathernow.helper;
 
 import android.app.Notification;
 import android.app.NotificationChannel;

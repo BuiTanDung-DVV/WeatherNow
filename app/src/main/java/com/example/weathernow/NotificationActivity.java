@@ -21,6 +21,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.example.weathernow.data.AppDatabase;
 import com.example.weathernow.data.WeatherEntity;
+import com.example.weathernow.helper.LocaleHelper;
 
 public class NotificationActivity extends AppCompatActivity {
 
@@ -52,13 +53,13 @@ public class NotificationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Khởi tạo Switch và kiểm tra trạng thái
-            switchNotification = findViewById(R.id.switchNotification);
-            boolean isNotificationsEnabled = sharedPreferences.getBoolean("notifications", false);
-            switchNotification.setChecked(isNotificationsEnabled);
+        switchNotification = findViewById(R.id.switchNotification);
+        boolean isNotificationsEnabled = sharedPreferences.getBoolean("notifications", false);
+        switchNotification.setChecked(isNotificationsEnabled);
 
-            switchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                toggleNotification(isChecked);
-            });
+        switchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            toggleNotification(isChecked);
+        });
     }
 
     private void fetchWeatherDataAndShowNotification() {
@@ -77,7 +78,7 @@ public class NotificationActivity extends AppCompatActivity {
                     weatherDetailsTextView.setText(weatherDetails);
 
                     // Tạo thông báo hệ thống
-                    createWeatherNotification(latestWeather);
+                    createWeatherNotification(this, latestWeather);
                 } else {
                     // Nếu không có dữ liệu thời tiết, hiển thị thông báo lỗi
                     weatherDetailsTextView.setText("Không có dữ liệu thời tiết.");
@@ -143,38 +144,32 @@ public class NotificationActivity extends AppCompatActivity {
             // Nếu thông báo bị tắt, có thể không cần tạo kênh hoặc gửi thông báo nữa.
         }
     }
-    private void createWeatherNotification(WeatherEntity weather) {
-        // Kiểm tra quyền gửi thông báo
+    public static void createWeatherNotification(Context context, WeatherEntity weather) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Cần cấp quyền thông báo", Toast.LENGTH_SHORT).show();
-                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_NOTIFICATION_PERMISSION);
+            if (context.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
         }
-        // Tạo PendingIntent cho notification (có thể mở activity khi người dùng nhấn vào thông báo)
-        Intent intent = new Intent(this, NotificationActivity.class);
+
+        Intent intent = new Intent(context, NotificationActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
-                this,
+                context,
                 0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        // Tạo notification với thông tin thời tiết
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "weather_channel")
-                .setSmallIcon(R.drawable.ic_weather) // Icon của notification
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "weather_channel")
+                .setSmallIcon(R.drawable.ic_weather)
                 .setContentTitle("Weather Notification: " + weather.getCity())
                 .setContentText("Temperature: " + weather.getTemperature() + "°C, WindSpeed: " + weather.getWindSpeed() + " m/s")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true); // Đóng thông báo khi nhấn vào
+                .setAutoCancel(true);
 
-        // Hiển thị thông báo
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(1, notificationBuilder.build());
     }
-
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String channelId = "weather_channel";

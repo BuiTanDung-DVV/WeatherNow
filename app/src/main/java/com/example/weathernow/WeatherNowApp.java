@@ -6,6 +6,8 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import com.example.weathernow.helper.WeatherNotificationWorker;
+
 import java.util.concurrent.TimeUnit;
 
 public class WeatherNowApp extends Application {

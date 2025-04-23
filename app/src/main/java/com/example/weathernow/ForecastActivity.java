@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.weathernow.api.ApiClient;
 import com.example.weathernow.api.WeatherService;
+import com.example.weathernow.helper.LocaleHelper;
 import com.example.weathernow.model.HourlyForecast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

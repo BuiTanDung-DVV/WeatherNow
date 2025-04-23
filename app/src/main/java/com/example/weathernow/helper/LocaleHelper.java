@@ -1,5 +1,5 @@
 // File: LocaleHelper.java
-package com.example.weathernow;
+package com.example.weathernow.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;

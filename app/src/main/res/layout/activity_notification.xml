@@ -1,52 +1,70 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@android:color/white"
         android:title="@string/notification_settings"
-        android:titleTextColor="@android:color/white"
+        android:titleTextColor="@android:color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
-    </androidx.appcompat.widget.Toolbar>
-
-    <Switch
-        android:id="@+id/switchNotification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/notification_title"
-        android:textColor="#000000"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="8dp"/>
-
-    <!-- TextView hiển thị thông báo -->
-    <ScrollView
+    <!-- LinearLayout -->
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/switchNotification"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/textNotifications"
-            android:layout_width="match_parent"
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:textColor="#000000"
-            android:text="@string/notification_message" />
-    </ScrollView>
+            android:src="@drawable/ic_back"
+            android:layout_margin="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_gravity="start"
+            app:tint="@color/black" />
 
+        <!-- Notification Switch -->
+        <Switch
+            android:id="@+id/switchNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_title"
+            android:textColor="@color/black"
+            android:layout_margin="8dp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <!-- ScrollView with TextView -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/textNotifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:text="@string/notification_message" />
+        </ScrollView>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -29,6 +29,7 @@ import com.example.weathernow.data.AppDatabase;
 import com.example.weathernow.data.WeatherDao;
 import com.example.weathernow.data.WeatherEntity;
 import com.example.weathernow.firebase.FirestoreManager;
+import com.example.weathernow.helper.LocaleHelper;
 import com.example.weathernow.helper.WeatherShareHelper;
 import com.example.weathernow.helper.WeatherUtils;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -307,6 +308,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 ImageView weatherImageView = findViewById(R.id.imageView4);
                                 weatherImageView.setImageResource(weatherIcon);
+                                NotificationActivity.createWeatherNotification(MainActivity.this, weatherEntity);
                             });
                         }).start();
                         if (!cityList.contains(city)) {

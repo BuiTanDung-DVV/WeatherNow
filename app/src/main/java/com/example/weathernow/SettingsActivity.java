@@ -5,29 +5,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.os.Build;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Locale;
+import com.example.weathernow.helper.LocaleHelper;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private LinearLayout notificationLayout, termsSetting, privacySetting, languageSetting;
-    private SharedPreferences sharedPreferences;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -45,15 +36,13 @@ public class SettingsActivity extends AppCompatActivity {
         privacySetting = findViewById(R.id.privacyLayout);
         languageSetting = findViewById(R.id.languageLayout);
 
-        sharedPreferences = getSharedPreferences("WeatherNowSettings", MODE_PRIVATE);
-
         ImageButton btnBack = findViewById(R.id.btnBack);
 
         notificationLayout.setOnClickListener(v -> openNotificationActivity());
         languageSetting.setOnClickListener(v -> openLanguageSettings());
         termsSetting.setOnClickListener(v -> openTermsAndConditions());
         privacySetting.setOnClickListener(v -> openPrivacyPolicy());
-
+        btnBack.setOnClickListener(v -> finish());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
