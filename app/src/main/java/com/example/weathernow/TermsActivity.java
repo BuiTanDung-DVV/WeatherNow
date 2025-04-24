@@ -1,12 +1,19 @@
 package com.example.weathernow;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.weathernow.helper.LocaleHelper;
+
 public class TermsActivity extends AppCompatActivity {
+    protected void attachBaseContext(Context newBase) {
+        String language = LocaleHelper.getStoredLanguage(newBase);
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, language));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +24,12 @@ public class TermsActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
 
         TextView termsTextView = findViewById(R.id.termsTextView);
-        termsTextView.setText("Đây là nội dung Điều khoản sử dụng của ứng dụng WeatherNow. Vui lòng đọc kỹ trước khi sử dụng.");
+        termsTextView.setText(getString(R.string.terms_title));
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String currentLang = LocaleHelper.getStoredLanguage(this);
+        LocaleHelper.updateLocale(this, currentLang);
     }
 }

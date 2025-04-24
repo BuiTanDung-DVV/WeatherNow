@@ -144,8 +144,8 @@ public class MainActivity extends AppCompatActivity {
                     if (latestWeather != null) {
                         WeatherShareHelper.shareWeatherCard(MainActivity.this, latestWeather);
                     } else {
-                        Log.e(TAG, "Không có dữ liệu thời tiết để chia sẻ.");
-                        cityText.setText("Không có dữ liệu thời tiết để chia sẻ.");
+                        Log.e(TAG, getString(R.string.no_weather_data_to_share2));
+                        cityText.setText(getString(R.string.no_weather_data_to_share2));
                     }
                 });
             }).start();
@@ -183,12 +183,12 @@ public class MainActivity extends AppCompatActivity {
                             updateCitySpinner(cityList);
                             fetchWeather(selectedCity);
                         } else {
-                            cityText.setText("Không thể xác định thành phố từ vị trí bản đồ.");
+                            cityText.setText(getString(R.string.cannot_get_city_from_map2));
                         }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    cityText.setText("Lỗi geocoder.");
+                    cityText.setText(getString(R.string.geocoder_error2));
                 }
             }
         }
@@ -247,8 +247,8 @@ public class MainActivity extends AppCompatActivity {
     }
     @NonNull
     private String standardizeCityName(@NonNull String city) {
-        if (city.startsWith("Thành phố ")) {
-            return city.replace("Thành phố ", "").trim();
+        if (city.startsWith(getString(R.string.city3))) {
+            return city.replace(getString(R.string.city3), "").trim();
         }
         return city;
     }
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     JsonObject data = response.body();
-                    Log.d(TAG, "Dữ liệu thời tiết: " + data.toString());
+                    Log.d(TAG, getString(R.string.weather_data3) + data.toString());
 
                     try {
                         String city = data.get("name").getAsString();
@@ -329,37 +329,37 @@ public class MainActivity extends AppCompatActivity {
                         firestoreManager.saveWeatherData(weatherEntity, weatherDao);
                         cityText.setText(selectedCity);
                     } catch (Exception e) {
-                        Log.e(TAG, "Lỗi phân tích JSON: " + e.getMessage(), e);
-                        runOnUiThread(() -> cityText.setText("Lỗi phân tích dữ liệu thời tiết."));
+                        Log.e(TAG, getString(R.string.json_parse_error3) + e.getMessage(), e);
+                        runOnUiThread(() -> cityText.setText(getString(R.string.parsing_weather_error2)));
                     }
 
                 } else {
-                    Log.e(TAG, "Lỗi phản hồi: " + response.code());
-                    runOnUiThread(() -> cityText.setText("Không tìm thấy thành phố hoặc phản hồi lỗi: " + response.code()));
+                    Log.e(TAG, getString(R.string.response_error3) + response.code());
+                    runOnUiThread(() -> cityText.setText(getString(R.string.not_found_or_error_response2) + response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.e(TAG, "Lỗi kết nối: " + t.getMessage(), t);
-                runOnUiThread(() -> cityText.setText("Không thể kết nối đến máy chủ: " + t.getMessage()));
+                Log.e(TAG, getString(R.string.connection_error3) + t.getMessage(), t);
+                runOnUiThread(() -> cityText.setText(getString(R.string.server_connection_failed2) + t.getMessage()));
             }
         });
 
-        Log.d("WeatherTest", "Đang lấy dữ liệu thời tiết cho: " + standardizedCity);
+        Log.d("WeatherTest", getString(R.string.fetching_weather_data3) + standardizedCity);
     }
     private void fetchCurrentLocation() {
-        Log.d(TAG, "Đang yêu cầu quyền truy cập vị trí...");
+        Log.d(TAG, getString(R.string.requesting_location_permission2));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
             return;
         }
 
-        Log.d(TAG, "Đã có quyền truy cập vị trí, lấy vị trí...");
+        Log.d(TAG, getString(R.string.location_permission_granted2));
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_HIGH_ACCURACY, null)
                 .addOnSuccessListener(this, location -> {
                     if (location != null) {
-                        Log.d(TAG, "Vị trí hiện tại: " + location.getLatitude() + ", " + location.getLongitude());
+                        Log.d(TAG, getString(R.string.current_location2) + location.getLatitude() + ", " + location.getLongitude());
 
                         // Tiến hành xử lý tiếp theo
                         Geocoder geocoder = new Geocoder(MainActivity.this, Locale.getDefault());
@@ -376,15 +376,15 @@ public class MainActivity extends AppCompatActivity {
                                 String featureName = address.getFeatureName();
 
                                 // In ra thông tin địa chỉ để kiểm tra
-                                Log.d(TAG, "Địa chỉ: " + address.toString());
-                                Log.d(TAG, "Tên thành phố: " + city);
-                                Log.d(TAG, "Quốc gia: " + country);
-                                Log.d(TAG, "Mã bưu điện: " + postalCode);
-                                Log.d(TAG, "Địa phương: " + subLocality);
-                                Log.d(TAG, "Tên địa điểm: " + featureName);
+                                Log.d(TAG, getString(R.string.address3) + address.toString());
+                                Log.d(TAG, getString(R.string.city_name3) + city);
+                                Log.d(TAG, getString(R.string.country3) + country);
+                                Log.d(TAG, getString(R.string.postal_code3) + postalCode);
+                                Log.d(TAG, getString(R.string.locality3) + subLocality);
+                                Log.d(TAG, getString(R.string.feature_name3) + featureName);
 
                                 if (city != null) {
-                                    Log.d(TAG, "Thành phố từ GPS: " + city);
+                                    Log.d(TAG, getString(R.string.city_from_gps3) + city);
                                     selectedCity = city;
                                     fetchWeather(selectedCity); // Gọi API lấy thời tiết cho thành phố
                                     if (!cityList.contains(city)) {
@@ -393,24 +393,24 @@ public class MainActivity extends AppCompatActivity {
                                     cityText.setText(selectedCity);
                                     updateCitySpinner(cityList);// Cập nhật Spinner với thành phố mới
                                 } else {
-                                    Log.e(TAG, "Không thể lấy tên thành phố từ GPS.");
-                                    cityText.setText("Không thể xác định thành phố từ vị trí.");
+                                    Log.e(TAG, getString(R.string.cannot_get_city_from_gps3));
+                                    cityText.setText(getString(R.string.cannot_get_city_from_location3));
                                 }
                             } else {
-                                Log.e(TAG, "Không tìm thấy địa chỉ từ tọa độ.");
-                                cityText.setText("Không thể xác định địa chỉ.");
+                                    Log.e(TAG, getString(R.string.cannot_get_address_from_coordinates3));
+                                cityText.setText(getString(R.string.cannot_determine_address3));
                             }
                         } catch (IOException e) {
-                            Log.e(TAG, "Lỗi geocoder: " + e.getMessage());
+                            Log.e(TAG, getString(R.string.geocoder_error3) + e.getMessage());
                         }
                     } else {
-                        Log.e(TAG, "Vị trí hiện tại không có giá trị.");
-                        cityText.setText("Không thể lấy vị trí.");
+                        Log.e(TAG, getString(R.string.location_not_available3));
+                        cityText.setText(getString(R.string.cannot_get_location3));
                     }
                 })
                 .addOnFailureListener(this, e -> {
-                    Log.e(TAG, "Không thể lấy vị trí hiện tại", e);
-                    cityText.setText("Không thể lấy vị trí.");
+                    Log.e(TAG, getString(R.string.cannot_get_current_location3), e);
+                    cityText.setText(getString(R.string.cannot_get_location3));
                 });
     }
     @Override

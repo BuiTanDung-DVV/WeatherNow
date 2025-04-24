@@ -17,6 +17,7 @@ public class LanguageSettingsActivity extends AppCompatActivity {
     private RadioGroup languageRadioGroup;
     private RadioButton radioVietnamese, radioEnglish, radioFrench;
     private SharedPreferences sharedPreferences;
+    private ImageButton btnBack;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -30,20 +31,17 @@ public class LanguageSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language_settings);
 
-        // Khởi tạo SharedPreferences để lưu/cập nhật dữ liệu người dùng
         sharedPreferences = getSharedPreferences("language_prefs", MODE_PRIVATE);
 
-        // Ánh xạ các thành phần giao diện trong layout với biến Java
         languageRadioGroup = findViewById(R.id.languageRadioGroup);
         radioVietnamese = findViewById(R.id.radioVietnamese);
         radioEnglish = findViewById(R.id.radioEnglish);
         radioFrench = findViewById(R.id.radioFrench);
+        btnBack = findViewById(R.id.btnBack);
         ImageButton btnBack = findViewById(R.id.btnBack);
 
-        // Gán sự kiện click cho nút "Quay lại" → đóng Activity hiện tại
         btnBack.setOnClickListener(v -> finish());
 
-        // Đặt ngôn ngữ được chọn hiện tại dựa vào dữ liệu đã lưu
         String currentLanguage = sharedPreferences.getString("language", "vi");
         switch (currentLanguage) {
             case "vi":

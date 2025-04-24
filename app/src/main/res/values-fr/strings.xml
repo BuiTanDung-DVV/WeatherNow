@@ -10,8 +10,8 @@
     <string name="weather_icon">Icône météo</string>
     <string name="city_name">Nom de la ville</string>
     <string name="temperature_placeholder">-- °C</string>
-    <string name="wind_format">Vent | %1$s m/s</string>
-    <string name="humidity_format">Humidité | %1$s%%</string>
+    <string name="wind_format">Vent | m/s</string>
+    <string name="humidity_format">Humidité | %</string>
     <string name="current_location">Position actuelle</string>
     <string name="detailed_forecast">Prévisions détaillées</string>
     <string name="settings">Paramètres</string>
@@ -21,8 +21,8 @@
     <string name="share_city_placeholder">Ville</string>
     <string name="share_temp_placeholder">30°C</string>
     <string name="share_desc_placeholder">Ciel dégagé</string>
-    <string name="share_humidity_format">Humidité: %1$d%%</string>
-    <string name="share_wind_format">Vent: %1$.2f m/s</string>
+    <string name="share_humidity_format">Humidité: %</string>
+    <string name="share_wind_format">Vent: m/s</string>
 
     <!-- Map Activity -->
     <string name="search_city_hint">Rechercher une ville</string>
@@ -34,6 +34,9 @@
     <string name="language_settings">Paramètres de langue</string>
     <string name="terms_and_conditions">Conditions d\'utilisation</string>
     <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="notification_permission_granted">Notification permission granted</string>
+    <string name="notification_permission_declined">You have declined notification permission</string>
+
 
     <!-- Language Settings -->
     <string name="language">Langue</string>
@@ -43,11 +46,11 @@
 
     <!-- Forecast Activity -->
     <string name="detailed_weather_forecast">Prévisions météo détaillées</string>
-    <string name="day_forecast_loading">Jour %1$d: (chargement...)</string>
-    <string name="day_forecast_loading2">Jour %2$d: (chargement...)</string>
-    <string name="day_forecast_loading3">Jour %2$d: (chargement...)</string>
-    <string name="day_forecast_loading4">Jour %2$d: (chargement...)</string>
-    <string name="day_forecast_loading5">Jour %2$d: (chargement...)</string>
+    <string name="day_forecast_loading">Jour 1: (chargement...)</string>
+    <string name="day_forecast_loading2">Jour 2: (chargement...)</string>
+    <string name="day_forecast_loading3">Jour 2: (chargement...)</string>
+    <string name="day_forecast_loading4">Jour 2: (chargement...)</string>
+    <string name="day_forecast_loading5">Jour 2: (chargement...)</string>
 
     <string name="day_forescast">Prévisions sur 5 jours</string>
     <!-- Hourly Forecast -->
@@ -61,7 +64,63 @@
     <string name="retry">Réessayer</string>
 
     <!-- Notification Activity -->
+    <string name="notification_temp">Température : </string>
+    <string name="notification_humidity">Humidité : </string>
+    <string name="notification_wind">Vent : </string>
+
     <string name="notification_title">Titre de la notification</string>
     <string name="notification_message">La notification saffichera ici...</string>
+
+    <!-- Term activity -->
+    <string name="terms_title">Voici les conditions d utilisation de l application WeatherNow. Veuillez lire attentivement avant utilisation.</string>
+    <string name="privacy_title">Voici la politique de confidentialité de l application WeatherNow. Nous nous engageons à protéger vos informations personnelles.</string>
+    <string name="notification_enabled">Les notifications système ont été activées.</string>
+    <string name="notification_permission_denied">Autorisation d’envoyer des notifications refusée</string>
+    <string name="no_weather_data">Aucune donnée météo disponible.</string>
+    <string name="need_enable_notification">Permission de notification requise</string>
+    <string name="notification_permission_denied1">Permission de notification refusée</string>
+    <string name="notification_enabled1">Notification activée</string>
+    <string name="notification_disabled">Notification désactivée</string>
+    <string name="please_select_location">Veuillez sélectionner un emplacement</string>
+    <string name="location_not_found">Emplacement introuvable</string>
+    <string name="error_finding_location">Erreur lors de la recherche de l emplacement</string>
+    <string name="unknown_location">Emplacement inconnu</string>
+    <string name="current_location1">Emplacement actuel</string>
+    <string name="selected_location">Emplacement sélectionné</string>
+
+    <string name="no_weather_data_to_share2">Aucune donnée météo à partager.</string>
+    <string name="cannot_get_city_from_map2">Impossible de déterminer la ville à partir de la carte.</string>
+    <string name="geocoder_error2">Erreur de géocodeur.</string>
+    <string name="parsing_weather_error2">Erreur lors de l analyse des données météo.</string>
+    <string name="not_found_or_error_response2">Ville introuvable ou réponse d erreur : </string>
+    <string name="server_connection_failed2">Échec de la connexion au serveur : </string>
+    <string name="requesting_location_permission2">Demande d autorisation de localisation...</string>
+    <string name="location_permission_granted2">Autorisation de localisation accordée, récupération de la position...</string>
+    <string name="current_location2">Position actuelle : </string>
+
+    <string name="city3">Ville</string>
+    <string name="weather_data3">Données météo :</string>
+    <string name="json_parse_error3">Erreur d analyse JSON :</string>
+    <string name="response_error3">Erreur de réponse :</string>
+    <string name="connection_error3">Erreur de connexion :</string>
+    <string name="fetching_weather_data3">Récupération des données météo pour :</string>
+    <string name="address3">Adresse :</string>
+    <string name="city_name3">Nom de la ville :</string>
+    <string name="country3">Pays :</string>
+    <string name="postal_code3">Code postal :</string>
+    <string name="locality3">Localité :</string>
+    <string name="feature_name3">Nom de la caractéristique :</string>
+    <string name="city_from_gps3">Ville à partir du GPS :</string>
+    <string name="cannot_get_city_from_gps3">Impossible d obtenir la ville depuis le GPS.</string>
+    <string name="cannot_get_city_from_location3">Impossible de déterminer la ville depuis la localisation.</string>
+    <string name="cannot_get_address_from_coordinates3">Impossible de trouver l adresse à partir des coordonnées.</string>
+    <string name="cannot_determine_address3">Impossible de déterminer l adresse.</string>
+    <string name="geocoder_error3">Erreur de géocodeur :</string>
+    <string name="location_not_available3">La localisation actuelle est indisponible.</string>
+    <string name="cannot_get_location3">Impossible d obtenir la localisation.</string>
+    <string name="cannot_get_current_location3">Impossible d obtenir la localisation actuelle.</string>
+    <string name="data_format_or_parse_error">Erreur de format ou d analyse des données :</string>
+    <string name="hourly_data_parse_error3">Erreur d analyse des données horaires :</string>
+
 
 </resources>

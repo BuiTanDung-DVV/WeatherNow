@@ -39,7 +39,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private SearchView searchView;
     @Override
     protected void attachBaseContext(Context newBase) {
-        // Lấy ngôn ngữ đã lưu và áp dụng
         String language = LocaleHelper.getStoredLanguage(newBase);
         super.attachBaseContext(LocaleHelper.setLocale(newBase, language));
     }
@@ -82,7 +81,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 setResult(Activity.RESULT_OK, resultIntent);
                 finish();
             } else {
-                Toast.makeText(MapActivity.this, "Vui lòng chọn vị trí", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapActivity.this, getString(R.string.please_select_location), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -102,11 +101,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
                 }
             } else {
-                Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.location_not_found), Toast.LENGTH_SHORT).show();
             }
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error finding location", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.error_finding_location), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -125,14 +124,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             if (location != null) {
                 currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
-                marker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title("Vị trí hiện tại"));
+                marker = mMap.addMarker(new MarkerOptions().position(currentLatLng).title(getString(R.string.current_location1)));
             }
         });
 
         mMap.setOnMapClickListener(latLng -> {
             currentLatLng = latLng;
             if (marker != null) marker.remove();
-            marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Vị trí đã chọn"));
+            marker = mMap.addMarker(new MarkerOptions().position(latLng).title(getString(R.string.selected_location)));
         });
     }
 
@@ -147,14 +146,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "Không rõ vị trí";
+        return getString(R.string.unknown_location);
     }
     @Override
     protected void onResume() {
         super.onResume();
-        // Kiểm tra và cập nhật ngôn ngữ
         String currentLang = LocaleHelper.getStoredLanguage(this);
         LocaleHelper.updateLocale(this, currentLang);
-        // Tải lại Activity nếu ngôn ngữ thay đổi (tùy chọn)
     }
 }

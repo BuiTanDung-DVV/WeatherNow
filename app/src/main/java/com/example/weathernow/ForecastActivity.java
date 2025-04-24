@@ -84,13 +84,13 @@ public class ForecastActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (!response.isSuccessful() || response.body() == null) {
-                    displayError("Lỗi phản hồi: " + response.code());
+                    displayError(getString(R.string.response_error3) + response.code());
                     return;
                 }
 
                 JsonArray list = response.body().getAsJsonArray("list");
                 if (list == null) {
-                    displayError("Không có dữ liệu dự báo.");
+                    displayError(getString(R.string.no_weather_data));
                     return;
                 }
 
@@ -109,8 +109,8 @@ public class ForecastActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                displayError("Lỗi kết nối: " + t.getMessage());
-                Log.e(TAG, "Lỗi kết nối API", t);
+                displayError(getString(R.string.connection_error3) + t.getMessage());
+                Log.e(TAG,  getString(R.string.connection_error3) +"API", t);
             }
         });
     }
@@ -156,7 +156,7 @@ public class ForecastActivity extends AppCompatActivity {
                 if (dailyForecast.size() == 5) break;
 
             } catch (Exception e) {
-                Log.e(TAG, "Lỗi định dạng hoặc phân tích dữ liệu: " + e.getMessage(), e);
+                Log.e(TAG, getString(R.string.hourly_data_parse_error3) + e.getMessage(), e);
             }
         }
 
@@ -213,7 +213,7 @@ public class ForecastActivity extends AppCompatActivity {
                 if (hourlyForecasts.size() >= 24) break;
 
             } catch (Exception e) {
-                Log.e(TAG, "Lỗi parse dữ liệu theo giờ: " + e.getMessage(), e);
+                Log.e(TAG, getString(R.string.data_format_or_parse_error) + e.getMessage(), e);
             }
         }
         return hourlyForecasts;

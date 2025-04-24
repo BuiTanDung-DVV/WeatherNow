@@ -20,9 +20,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     private LinearLayout notificationLayout, termsSetting, privacySetting, languageSetting;
 
+
     @Override
     protected void attachBaseContext(Context newBase) {
-        // Lấy ngôn ngữ đã lưu và áp dụng
         String language = LocaleHelper.getStoredLanguage(newBase);
         super.attachBaseContext(LocaleHelper.setLocale(newBase, language));
     }
@@ -52,19 +52,16 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void openLanguageSettings() {
-        // Mở màn hình cài đặt ngôn ngữ
         Intent intent = new Intent(this, LanguageSettingsActivity.class);
         startActivity(intent);
     }
 
     private void openTermsAndConditions() {
-        // Mở màn hình điều khoản sử dụng
         Intent intent = new Intent(this, TermsActivity.class);
         startActivity(intent);
     }
 
     private void openPrivacyPolicy() {
-        // Mở màn hình chính sách bảo mật
         Intent intent = new Intent(this, PrivacyActivity.class);
         startActivity(intent);
     }
@@ -78,19 +75,17 @@ public class SettingsActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Đã cấp quyền thông báo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.notification_permission_granted), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "Bạn đã từ chối quyền thông báo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.notification_permission_declined), Toast.LENGTH_SHORT).show();
             }
         }
     }
     @Override
     protected void onResume() {
         super.onResume();
-        // Kiểm tra và cập nhật ngôn ngữ
         String currentLang = LocaleHelper.getStoredLanguage(this);
         LocaleHelper.updateLocale(this, currentLang);
-         // Tải lại Activity nếu ngôn ngữ thay đổi (tùy chọn)
     }
 
 

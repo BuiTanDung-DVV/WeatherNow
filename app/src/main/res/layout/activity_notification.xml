@@ -32,12 +32,12 @@
         <!-- Back Button -->
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="start"
             android:layout_margin="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_gravity="start"
+            android:src="@drawable/ic_back"
             app:tint="@color/black" />
 
         <!-- Notification Switch -->

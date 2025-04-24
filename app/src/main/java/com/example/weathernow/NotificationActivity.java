@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ public class NotificationActivity extends AppCompatActivity {
     private AppDatabase appDatabase; // Cơ sở dữ liệu Room
     private TextView weatherDetailsTextView; // TextView để hiển thị thông tin thời tiết
     private static final int REQUEST_CODE_NOTIFICATION_PERMISSION = 1;
-
+    private ImageButton btnBack;
     @Override
     protected void attachBaseContext(Context newBase) {
         // Lấy ngôn ngữ đã lưu và áp dụng
@@ -43,6 +44,7 @@ public class NotificationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notification);
         weatherDetailsTextView = findViewById(R.id.textNotifications);
         appDatabase = AppDatabase.getInstance(this); // Khởi tạo AppDatabase
+        btnBack = findViewById(R.id.btnBack);
         fetchWeatherDataAndShowNotification();
 
 
@@ -56,14 +58,14 @@ public class NotificationActivity extends AppCompatActivity {
         switchNotification = findViewById(R.id.switchNotification);
         boolean isNotificationsEnabled = sharedPreferences.getBoolean("notifications", false);
         switchNotification.setChecked(isNotificationsEnabled);
-
+        btnBack.setOnClickListener( v -> finish());
         switchNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
             toggleNotification(isChecked);
         });
     }
 
     private void fetchWeatherDataAndShowNotification() {
-        String selectedCity = "Hà Nội"; // Giả sử thành phố bạn muốn lấy dữ liệu từ Room
+        String selectedCity = "Hà Nội"; // thành phố muốn lấy dữ liệu từ Room
 
         // Lấy dữ liệu từ Room trong một thread riêng
         new Thread(() -> {
@@ -72,16 +74,16 @@ public class NotificationActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 if (latestWeather != null) {
                     // Cập nhật UI với thông tin thời tiết từ cơ sở dữ liệu
-                    String weatherDetails = "Nhiệt độ: " + latestWeather.getTemperature() + "°C\n" +
-                            "Độ ẩm: " + latestWeather.getHumidity() + "%\n" +
-                            "Gió: " + latestWeather.getWindSpeed() + " m/s";
+                    String weatherDetails = getString(R.string.notification_temp) + latestWeather.getTemperature() + "°C\n" +
+                            getString(R.string.notification_humidity) + latestWeather.getHumidity() + "%\n" +
+                            getString(R.string.notification_wind) + latestWeather.getWindSpeed() + " m/s";
                     weatherDetailsTextView.setText(weatherDetails);
 
                     // Tạo thông báo hệ thống
                     createWeatherNotification(this, latestWeather);
                 } else {
                     // Nếu không có dữ liệu thời tiết, hiển thị thông báo lỗi
-                    weatherDetailsTextView.setText("Không có dữ liệu thời tiết.");
+                    weatherDetailsTextView.setText(getString(R.string.no_weather_data));
                 }
             });
         }).start();
@@ -92,10 +94,10 @@ public class NotificationActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_NOTIFICATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Quyền đã được cấp, tiếp tục thực hiện thông báo
-                showSystemNotification("Thông báo hệ thống đã được bật.");
+                showSystemNotification(getString(R.string.notification_enabled));
             } else {
                 // Quyền bị từ chối, thông báo cho người dùng
-                Toast.makeText(this, "Không có quyền gửi thông báo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.notification_permission_denied), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -105,7 +107,7 @@ public class NotificationActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 // Nếu chưa cấp quyền, yêu cầu cấp quyền
-                Toast.makeText(this, "Cần cấp quyền thông báo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.need_enable_notification), Toast.LENGTH_SHORT).show();
                 requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_NOTIFICATION_PERMISSION);
                 return;
             }
@@ -124,7 +126,7 @@ public class NotificationActivity extends AppCompatActivity {
             notificationManager.notify(1001, builder.build());
         } catch (SecurityException e) {
             // Xử lý khi quyền bị từ chối
-            Toast.makeText(this, "Quyền thông báo bị từ chối", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.notification_permission_denied1), Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             // Xử lý các lỗi khác nếu cần
             e.printStackTrace();
@@ -132,16 +134,16 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void toggleNotification(boolean isChecked) {
-        // Lưu trạng thái bật/tắt thông báo vào SharedPreferences
+        // Lưu trạng thái bật/tắt thông báo
         sharedPreferences.edit().putBoolean("notifications", isChecked).apply();  // Lưu giá trị
-        String message = isChecked ? "Thông báo đã bật" : "Thông báo đã tắt";
+        String message = isChecked ? getString(R.string.notification_enabled1) : getString(R.string.notification_disabled);
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
         if (isChecked) {
             createNotificationChannel();
             showSystemNotification(message);  // Hiển thị thông báo hệ thống
         } else {
-            // Nếu thông báo bị tắt, có thể không cần tạo kênh hoặc gửi thông báo nữa.
+
         }
     }
     public static void createWeatherNotification(Context context, WeatherEntity weather) {
