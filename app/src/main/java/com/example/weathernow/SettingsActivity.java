@@ -49,6 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
+
     }
 
     private void openLanguageSettings() {
@@ -67,6 +68,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
     private void openNotificationActivity(){
         Intent intent = new Intent(this, NotificationActivity.class);
+        String selectedCity = getIntent().getStringExtra("selectedCity");
+
+        intent.putExtra("selectedCity", selectedCity);
+
         startActivity(intent);
     }
 

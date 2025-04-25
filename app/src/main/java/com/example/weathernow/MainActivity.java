@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnSettings.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            intent.putExtra("selectedCity", selectedCity);
 
             startActivity(intent);
         });

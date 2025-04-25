@@ -71,7 +71,9 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void fetchWeatherDataAndShowNotification() {
-        String selectedCity = "Hà Nội"; // thành phố muốn lấy dữ liệu từ Room
+        final String selectedCity = getIntent().getStringExtra("selectedCity") != null
+                ? getIntent().getStringExtra("selectedCity")
+                : "Hà Nội";
 
         // Lấy dữ liệu từ Room trong một thread riêng
         new Thread(() -> {
@@ -158,7 +160,7 @@ public class NotificationActivity extends AppCompatActivity {
                     ExistingPeriodicWorkPolicy.KEEP,
                     periodicWorkRequest);
         } else {
-            WorkManager.getInstance(this).cancelUniqueWork("weather_notification_work");
+
         }
     }
     public static void createWeatherNotification(Context context, WeatherEntity weather) {
