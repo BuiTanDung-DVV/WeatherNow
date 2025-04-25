@@ -19,10 +19,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.weathernow.data.AppDatabase;
 import com.example.weathernow.data.WeatherEntity;
 import com.example.weathernow.helper.LocaleHelper;
+import com.example.weathernow.helper.WeatherNotificationWorker;
+
+import java.util.concurrent.TimeUnit;
 
 public class NotificationActivity extends AppCompatActivity {
 
@@ -89,13 +95,15 @@ public class NotificationActivity extends AppCompatActivity {
         }).start();
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_CODE_NOTIFICATION_PERMISSION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, getString(R.string.notification_permission_granted), Toast.LENGTH_SHORT).show();
+                // Quyền đã được cấp, tiếp tục thực hiện thông báo
+                showSystemNotification(getString(R.string.notification_enabled));
             } else {
-                Toast.makeText(this, getString(R.string.notification_permission_declined), Toast.LENGTH_SHORT).show();
+                // Quyền bị từ chối, thông báo cho người dùng
+                Toast.makeText(this, getString(R.string.notification_permission_denied), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -140,8 +148,17 @@ public class NotificationActivity extends AppCompatActivity {
         if (isChecked) {
             createNotificationChannel();
             showSystemNotification(message);  // Hiển thị thông báo hệ thống
-        } else {
 
+            // Lên lịch WeatherNotificationWorker chạy định kỳ
+            PeriodicWorkRequest periodicWorkRequest =
+                    new PeriodicWorkRequest.Builder(WeatherNotificationWorker.class, 6, TimeUnit.HOURS)
+                            .build();
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                    "weather_notification_work",
+                    ExistingPeriodicWorkPolicy.KEEP,
+                    periodicWorkRequest);
+        } else {
+            WorkManager.getInstance(this).cancelUniqueWork("weather_notification_work");
         }
     }
     public static void createWeatherNotification(Context context, WeatherEntity weather) {

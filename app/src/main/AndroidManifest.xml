@@ -19,7 +19,6 @@
         android:theme="@style/Theme.WeatherNow"
 
         tools:targetApi="31"
-        android:name=".MyApp"
 
         >
         <!-- Đăng ký AuthActivity -->

@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
@@ -18,12 +19,17 @@ public class WeatherNotificationWorker extends Worker {
 
     @Override
     public Result doWork() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (getApplicationContext().checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                return Result.failure(); // Không gửi thông báo nếu thiếu quyền
+            }
+        }
         // Tạo thông báo
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Kiểm tra Android 8 trở lên để tạo channel thông báo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "weather_notification_channel";
+            String channelId = "weather_channel";
             NotificationChannel channel = new NotificationChannel(
                     channelId, "Weather Notifications", NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);

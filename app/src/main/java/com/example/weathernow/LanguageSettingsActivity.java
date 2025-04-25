@@ -17,7 +17,7 @@ public class LanguageSettingsActivity extends AppCompatActivity {
     private RadioGroup languageRadioGroup;
     private RadioButton radioVietnamese, radioEnglish, radioFrench;
     private SharedPreferences sharedPreferences;
-    private ImageButton btnBack;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -37,7 +37,6 @@ public class LanguageSettingsActivity extends AppCompatActivity {
         radioVietnamese = findViewById(R.id.radioVietnamese);
         radioEnglish = findViewById(R.id.radioEnglish);
         radioFrench = findViewById(R.id.radioFrench);
-        btnBack = findViewById(R.id.btnBack);
         ImageButton btnBack = findViewById(R.id.btnBack);
 
         btnBack.setOnClickListener(v -> finish());
