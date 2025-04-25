@@ -24,6 +24,37 @@ public class FirestoreManager {
     public FirestoreManager() {
         db = FirebaseFirestore.getInstance();
     }
+    public void syncLocalDataToFirestore(@NonNull WeatherDao weatherDao) {
+        // Get all local data that might need to be uploaded
+        new Thread(() -> {
+            List<WeatherEntity> localData = weatherDao.getAll();
+
+            for (WeatherEntity weather : localData) {
+                // Create a unique document ID using city and timestamp
+                String docId = weather.getCity() + "_" + weather.getTimestamp();
+
+                // Check if this record exists in Firestore
+                db.collection(COLLECTION_NAME)
+                        .document(docId)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (!documentSnapshot.exists()) {
+                                // This record doesn't exist in Firestore, upload it
+                                Map<String, Object> data = weatherToMap(weather);
+                                db.collection(COLLECTION_NAME)
+                                        .document(docId)
+                                        .set(data)
+                                        .addOnSuccessListener(aVoid ->
+                                                Log.d(TAG, "Synced local data to Firestore: " + docId))
+                                        .addOnFailureListener(e ->
+                                                Log.e(TAG, "Failed to sync local data", e));
+                            }
+                        })
+                        .addOnFailureListener(e ->
+                                Log.e(TAG, "Error checking if document exists", e));
+            }
+        }).start();
+    }
 
     // Convert timestamp (long) to formatted string
     private String formatTimestamp(long timestamp) {
