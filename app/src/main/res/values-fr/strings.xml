@@ -127,5 +127,6 @@
     <string name="offline_mode">Travail en mode hors ligne</string>
     <string name="offline_mode_forecast">Les prévisions nécessitent une connexion Internet. Affichage des données mises en cache.</string>
     <string name="forecast_data_unavailable_offline">Prévisions indisponibles en mode hors ligne</string>
+    <string name="map_requires_internet">La carte nécessite une connexion internet. Veuillez vous connecter et réessayer.</string>
     <string name="no_cached_forecast_data">Aucune donnée de prévision mise en cache disponible</string>
 </resources>

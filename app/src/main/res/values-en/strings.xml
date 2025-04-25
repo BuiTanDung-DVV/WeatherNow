@@ -128,5 +128,6 @@
     <string name="offline_mode">Working in offline mode</string>
     <string name="offline_mode_forecast">Forecast requires internet connection. Showing cached data.</string>
     <string name="forecast_data_unavailable_offline">Forecast unavailable in offline mode</string>
+    <string name="map_requires_internet">Map requires internet connection. Please connect and try again.</string>
     <string name="no_cached_forecast_data">No cached forecast data available</string>
 </resources>

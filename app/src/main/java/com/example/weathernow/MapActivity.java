@@ -46,6 +46,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        //kiêm tra kết nối internet
+        if (!MainActivity.isNetworkAvailable(this)) {
+            Toast.makeText(this, getString(R.string.map_requires_internet), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
 
         searchView = findViewById(R.id.searchView);
         View btnConfirm = findViewById(R.id.btnConfirmLocation);

@@ -128,5 +128,6 @@
     <string name="offline_mode">Đang làm việc ở chế độ ngoại tuyến</string>
     <string name="offline_mode_forecast">Dự báo yêu cầu kết nối internet. Hiển thị dữ liệu đã lưu.</string>
     <string name="forecast_data_unavailable_offline">Dự báo không khả dụng ở chế độ ngoại tuyến</string>
+    <string name="map_requires_internet">Bản đồ yêu cầu kết nối internet. Vui lòng kết nối và thử lại.</string>
     <string name="no_cached_forecast_data">Không có dữ liệu dự báo được lưu</string>
 </resources>
