@@ -122,6 +122,11 @@
     <string name="cannot_get_current_location3">Cannot get current location.</string>
     <string name="data_format_or_parse_error">Data format or parsing error:</string>
     <string name="hourly_data_parse_error3">Hourly data parse error:</string>
-
-
+    <!-- Offline Mode -->
+    <string name="offline_mode_message">Working in offline mode. Showing cached data.</string>
+    <string name="no_cached_data_available">No offline data available. Please connect to internet.</string>
+    <string name="offline_mode">Working in offline mode</string>
+    <string name="offline_mode_forecast">Forecast requires internet connection. Showing cached data.</string>
+    <string name="forecast_data_unavailable_offline">Forecast unavailable in offline mode</string>
+    <string name="no_cached_forecast_data">No cached forecast data available</string>
 </resources>

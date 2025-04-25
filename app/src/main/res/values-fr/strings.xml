@@ -121,6 +121,11 @@
     <string name="cannot_get_current_location3">Impossible d obtenir la localisation actuelle.</string>
     <string name="data_format_or_parse_error">Erreur de format ou d analyse des données :</string>
     <string name="hourly_data_parse_error3">Erreur d analyse des données horaires :</string>
-
-
+    <!-- Offline Mode -->
+    <string name="offline_mode_message">Travail en mode hors ligne. Affichage des données mises en cache.</string>
+    <string name="no_cached_data_available">Aucune donnée hors ligne disponible. Veuillez vous connecter à Internet.</string>
+    <string name="offline_mode">Travail en mode hors ligne</string>
+    <string name="offline_mode_forecast">Les prévisions nécessitent une connexion Internet. Affichage des données mises en cache.</string>
+    <string name="forecast_data_unavailable_offline">Prévisions indisponibles en mode hors ligne</string>
+    <string name="no_cached_forecast_data">Aucune donnée de prévision mise en cache disponible</string>
 </resources>

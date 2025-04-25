@@ -7,12 +7,16 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.weathernow.api.ApiClient;
 import com.example.weathernow.api.WeatherService;
+import com.example.weathernow.data.AppDatabase;
+import com.example.weathernow.data.WeatherEntity;
 import com.example.weathernow.helper.LocaleHelper;
+import com.example.weathernow.helper.WeatherUtils;
 import com.example.weathernow.model.HourlyForecast;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -75,8 +79,18 @@ public class ForecastActivity extends AppCompatActivity {
 
         fetchForecast(cityName);
     }
-
     private void fetchForecast(String cityName) {
+        if (MainActivity.isNetworkAvailable(this)) {
+            // Online - fetch from API
+            fetchForecastFromApi(cityName);
+        } else {
+            // Offline - hiên thị dữ liệu đã lưu
+            Toast.makeText(this, getString(R.string.offline_mode_forecast), Toast.LENGTH_SHORT).show();
+            displayOfflineForecast(cityName);
+        }
+    }
+
+    private void fetchForecastFromApi(String cityName) {
         Retrofit retrofit = ApiClient.getClient(this);
         WeatherService service = retrofit.create(WeatherService.class);
         String languageCode = LocaleHelper.getStoredLanguage(this);
@@ -113,6 +127,31 @@ public class ForecastActivity extends AppCompatActivity {
                 Log.e(TAG,  getString(R.string.connection_error3) +"API", t);
             }
         });
+    }
+    private void displayOfflineForecast(String cityName) {
+        new Thread(() -> {
+            WeatherEntity latestWeather = AppDatabase.getInstance(this).weatherDao().getLatestWeatherByCity(cityName);
+
+            runOnUiThread(() -> {
+                if (latestWeather != null) {
+                    // Display at least today's forecast from cached data
+                    String forecast = "Today: " + latestWeather.getTemperature() + "°C - " +
+                            latestWeather.getDescription();
+                    forecastViews[0].setText(forecast);
+
+                    // Set today's icon
+                    int iconResource = WeatherUtils.getWeatherIcon(latestWeather.getDescription());
+                    forecastIcons[0].setImageResource(iconResource);
+
+                    // Display message for other days
+                    for (int i = 1; i < forecastViews.length; i++) {
+                        forecastViews[i].setText(getString(R.string.forecast_data_unavailable_offline));
+                    }
+                } else {
+                    displayError(getString(R.string.no_cached_forecast_data));
+                }
+            });
+        }).start();
     }
 
     private Map<String, String> parseForecastData(JsonArray list) {

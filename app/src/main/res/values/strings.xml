@@ -122,5 +122,11 @@
     <string name="cannot_get_current_location3">Không thể lấy vị trí hiện tại</string>
     <string name="data_format_or_parse_error">Data format or parsing error:</string>
     <string name="hourly_data_parse_error3">Lỗi parse dữ liệu theo giờ:</string>
-
+    <!-- Offline Mode -->
+    <string name="offline_mode_message">Đang làm việc ở chế độ ngoại tuyến. Hiển thị dữ liệu đã lưu.</string>
+    <string name="no_cached_data_available">Không có dữ liệu ngoại tuyến. Vui lòng kết nối internet.</string>
+    <string name="offline_mode">Đang làm việc ở chế độ ngoại tuyến</string>
+    <string name="offline_mode_forecast">Dự báo yêu cầu kết nối internet. Hiển thị dữ liệu đã lưu.</string>
+    <string name="forecast_data_unavailable_offline">Dự báo không khả dụng ở chế độ ngoại tuyến</string>
+    <string name="no_cached_forecast_data">Không có dữ liệu dự báo được lưu</string>
 </resources>

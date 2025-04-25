@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -194,13 +195,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
     private void loadCityList() {
-        if (isNetworkAvailable()) {
+        if (isNetworkAvailable(this)) {
             // Tải danh sách từ Firebase
             firestoreManager.getCityList(cityNames -> runOnUiThread(() -> {
                 if (!cityNames.isEmpty()) {
@@ -255,11 +257,22 @@ public class MainActivity extends AppCompatActivity {
     }
     private void fetchWeather(String cityName) {
         String standardizedCity = standardizeCityName(cityName);
+
+        // Check network connectivity
+        if (isNetworkAvailable(this)) {
+            // Online - fetch from API
+            fetchWeatherFromApi(standardizedCity);
+        } else {
+            // Offline - lấy dữ liệu cục bộ
+            fetchWeatherFromLocalDatabase(standardizedCity);
+        }
+    }
+    private void fetchWeatherFromApi(String cityName) {
         Retrofit retrofit = ApiClient.getClient(this);
         //set ngôn ngữ
         WeatherService service = retrofit.create(WeatherService.class);
         String languageCode = LocaleHelper.getStoredLanguage(this);
-        Call<JsonObject> call = service.getWeatherByCity(standardizedCity, "metric", languageCode);
+        Call<JsonObject> call = service.getWeatherByCity(cityName, "metric", languageCode);
 
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -344,10 +357,39 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Log.e(TAG, getString(R.string.connection_error3) + t.getMessage(), t);
                 runOnUiThread(() -> cityText.setText(getString(R.string.server_connection_failed2) + t.getMessage()));
+                // Nếu không có kết nối, thử tải từ cơ sở dữ liệu cục bộ
+                fetchWeatherFromLocalDatabase(cityName);
             }
         });
 
-        Log.d("WeatherTest", getString(R.string.fetching_weather_data3) + standardizedCity);
+        Log.d("WeatherTest", getString(R.string.fetching_weather_data3) + cityName);
+    }
+    private void fetchWeatherFromLocalDatabase(String cityName) {
+        new Thread(() -> {
+            WeatherEntity latestWeather = appDatabase.weatherDao().getLatestWeatherByCity(cityName);
+
+            runOnUiThread(() -> {
+                if (latestWeather != null) {
+                    // Display cached weather data
+                    cityText.setText(getString(R.string.share_city_placeholder) + ": " + latestWeather.getCity());
+                    tempText.setText(Math.round(latestWeather.getTemperature()) + "°C");
+                    descText.setText(latestWeather.getDescription().toLowerCase());
+                    humidityText.setText(String.format(getString(R.string.share_humidity_format), latestWeather.getHumidity()));
+                    windText.setText(String.format(getString(R.string.share_wind_format), latestWeather.getWindSpeed()));
+
+                    // Set weather icon based on description
+                    ImageView weatherImageView = findViewById(R.id.imageView4);
+                    int weatherIcon = WeatherUtils.getWeatherIcon(latestWeather.getDescription());
+                    weatherImageView.setImageResource(weatherIcon);
+
+                    Toast.makeText(MainActivity.this,
+                            getString(R.string.offline_mode_message),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    cityText.setText(getString(R.string.no_cached_data_available));
+                }
+            });
+        }).start();
     }
     private void fetchCurrentLocation() {
         Log.d(TAG, getString(R.string.requesting_location_permission2));
