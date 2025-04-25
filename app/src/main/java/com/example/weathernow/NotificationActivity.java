@@ -89,15 +89,13 @@ public class NotificationActivity extends AppCompatActivity {
         }).start();
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_NOTIFICATION_PERMISSION) {
+        if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Quyền đã được cấp, tiếp tục thực hiện thông báo
-                showSystemNotification(getString(R.string.notification_enabled));
+                Toast.makeText(this, getString(R.string.notification_permission_granted), Toast.LENGTH_SHORT).show();
             } else {
-                // Quyền bị từ chối, thông báo cho người dùng
-                Toast.makeText(this, getString(R.string.notification_permission_denied), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.notification_permission_declined), Toast.LENGTH_SHORT).show();
             }
         }
     }
